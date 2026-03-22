@@ -1,0 +1,1802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
+<title>Inboxmail — Agency Email Outreach Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#ffffff;
+  --navy:#1e293b;
+  --green:#22c55e;
+  --green-light:#dcfce7;
+  --green-dark:#16a34a;
+  --surface:#f8fafc;
+  --surface2:#f1f5f9;
+  --border:#e2e8f0;
+  --text:#1e293b;
+  --muted:#64748b;
+  --muted2:#94a3b8;
+  --danger:#ef4444;
+  --warn:#f59e0b;
+  --blue:#3b82f6;
+  --purple:#8b5cf6;
+  --sidebar-w:240px;
+  --topbar-h:58px;
+  --mobile-nav-h:62px;
+  --radius:10px;
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);
+  --shadow-md:0 4px 6px -1px rgba(0,0,0,.08),0 2px 4px -1px rgba(0,0,0,.06);
+  --shadow-lg:0 10px 15px -3px rgba(0,0,0,.08),0 4px 6px -2px rgba(0,0,0,.05);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{height:100%;-webkit-tap-highlight-color:transparent}
+body{height:100%;background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;overflow:hidden}
+::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border);border-radius:10px}
+button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+a{color:var(--green);text-decoration:none}
+
+/* ═══════════════════════════════════════
+   AUTH SCREENS
+═══════════════════════════════════════ */
+#auth-screen{display:flex;min-height:100vh;overflow:auto}
+#auth-screen.hidden{display:none}
+.auth-left{flex:1;background:var(--navy);display:flex;flex-direction:column;justify-content:center;align-items:center;padding:60px 40px;position:relative;overflow:hidden;min-height:100vh}
+.auth-left::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 20%,#22c55e18 0%,transparent 60%),radial-gradient(ellipse at 80% 80%,#22c55e10 0%,transparent 50%)}
+.auth-brand{display:flex;align-items:center;gap:12px;margin-bottom:48px;position:relative;z-index:1}
+.auth-brand-icon{width:44px;height:44px;background:var(--green);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px}
+.auth-brand-name{font-size:24px;font-weight:800;color:#fff;letter-spacing:-.5px}
+.auth-headline{font-size:36px;font-weight:800;color:#fff;line-height:1.2;letter-spacing:-.5px;margin-bottom:16px;text-align:center;position:relative;z-index:1;max-width:400px}
+.auth-headline span{color:var(--green)}
+.auth-subhead{font-size:15px;color:#94a3b8;text-align:center;max-width:360px;line-height:1.7;position:relative;z-index:1}
+.auth-features{display:flex;flex-direction:column;gap:14px;margin-top:40px;position:relative;z-index:1;width:100%;max-width:360px}
+.auth-feat{display:flex;align-items:center;gap:12px;font-size:14px;color:#cbd5e1}
+.auth-feat-icon{width:28px;height:28px;background:#22c55e20;border:1px solid #22c55e40;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.auth-right{width:480px;min-width:380px;background:#fff;display:flex;flex-direction:column;justify-content:center;padding:50px 48px;overflow-y:auto}
+.auth-form-title{font-size:26px;font-weight:800;color:var(--navy);letter-spacing:-.5px;margin-bottom:6px}
+.auth-form-sub{font-size:14px;color:var(--muted);margin-bottom:32px}
+.auth-tabs{display:flex;background:var(--surface2);border-radius:10px;padding:4px;margin-bottom:28px;gap:4px}
+.auth-tab{flex:1;padding:8px;border:none;background:none;border-radius:7px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s}
+.auth-tab.active{background:#fff;color:var(--navy);box-shadow:var(--shadow)}
+.form-group{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+.form-label{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+.form-input,.form-select,.form-textarea{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);padding:10px 14px;color:var(--text);font-size:14px;outline:none;transition:border-color .15s;width:100%}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--green);box-shadow:0 0 0 3px #22c55e15}
+.form-textarea{resize:vertical;min-height:90px;font-family:'DM Mono',monospace;font-size:12px;line-height:1.6}
+.form-select option{background:#fff}
+.btn-auth{width:100%;padding:12px;background:var(--green);color:#fff;border:none;border-radius:var(--radius);font-size:14px;font-weight:700;cursor:pointer;transition:all .15s;margin-top:4px}
+.btn-auth:hover{background:var(--green-dark);transform:translateY(-1px);box-shadow:0 4px 12px #22c55e30}
+.auth-divider{display:flex;align-items:center;gap:12px;margin:20px 0;color:var(--muted2);font-size:12px}
+.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.social-btn{width:100%;padding:10px;border:1.5px solid var(--border);border-radius:var(--radius);font-size:13px;font-weight:600;color:var(--text);background:#fff;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:8px}
+.social-btn:hover{border-color:var(--green);background:var(--green-light)}
+.auth-switch{text-align:center;font-size:13px;color:var(--muted);margin-top:20px}
+.auth-switch a{color:var(--green);font-weight:600}
+.plan-selector{margin-bottom:20px}
+.plan-opts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+.plan-opt{border:1.5px solid var(--border);border-radius:var(--radius);padding:12px 10px;cursor:pointer;transition:all .15s;text-align:center}
+.plan-opt:hover{border-color:var(--green)}
+.plan-opt.selected{border-color:var(--green);background:var(--green-light)}
+.plan-opt-name{font-size:12px;font-weight:700;color:var(--navy)}
+.plan-opt-price{font-size:11px;color:var(--muted);margin-top:2px}
+.plan-opt.selected .plan-opt-name{color:var(--green-dark)}
+
+/* ═══════════════════════════════════════
+   MAIN APP
+═══════════════════════════════════════ */
+#app{display:none;flex:1;height:100vh;overflow:hidden;position:relative}
+#app.show{display:flex}
+
+/* SIDEBAR */
+.sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--navy);display:flex;flex-direction:column;transition:transform .25s ease;z-index:50;border-right:none}
+.logo{padding:20px 18px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.08)}
+.logo-icon{width:34px;height:34px;background:var(--green);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.logo-text{font-size:18px;font-weight:800;color:#fff;letter-spacing:-.5px}
+.logo-text span{color:var(--green)}
+.workspace-switcher{margin:10px 10px 4px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:10px 12px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:8px}
+.workspace-switcher:hover{background:rgba(255,255,255,.1)}
+.ws-icon{width:24px;height:24px;background:var(--green);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0}
+.ws-name{font-size:12px;font-weight:700;color:#fff;flex:1}
+.ws-arrow{color:rgba(255,255,255,.4);font-size:10px}
+nav{flex:1;padding:10px 10px;display:flex;flex-direction:column;gap:1px;overflow-y:auto}
+.nav-section{font-size:9px;font-weight:700;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.8px;padding:12px 10px 4px}
+.nav-item{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;font-size:13px;font-weight:600;color:rgba(255,255,255,.55);transition:all .15s;border:none;background:none;width:100%;text-align:left;white-space:nowrap}
+.nav-item:hover{background:rgba(255,255,255,.07);color:rgba(255,255,255,.9)}
+.nav-item.active{background:rgba(34,197,94,.15);color:var(--green)}
+.nav-badge{margin-left:auto;background:var(--green);color:#fff;font-size:9px;font-weight:800;padding:2px 6px;border-radius:10px;font-family:'DM Mono',monospace}
+.sidebar-footer{padding:12px;border-top:1px solid rgba(255,255,255,.08)}
+.user-pill{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;cursor:pointer;transition:background .15s}
+.user-pill:hover{background:rgba(255,255,255,.06)}
+.user-avatar{width:28px;height:28px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0}
+.user-info{flex:1;min-width:0}
+.user-name{font-size:12px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.user-plan{font-size:10px;color:rgba(255,255,255,.4)}
+.user-dots{color:rgba(255,255,255,.3);font-size:14px}
+
+/* SIDEBAR OVERLAY */
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:40}
+
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;background:var(--surface)}
+.topbar{height:var(--topbar-h);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 20px;background:#fff;flex-shrink:0;gap:10px;box-shadow:0 1px 0 var(--border)}
+.topbar-left{display:flex;align-items:center;gap:10px;min-width:0}
+.page-title{font-size:16px;font-weight:800;color:var(--navy);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.3px}
+.topbar-actions{display:flex;gap:8px;flex-shrink:0;align-items:center}
+.menu-btn{background:none;border:1.5px solid var(--border);color:var(--navy);padding:6px 10px;border-radius:8px;font-size:16px;display:none;align-items:center}
+.content{flex:1;overflow-y:auto;padding:22px;padding-bottom:90px}
+.content.no-pad{padding:0;overflow:hidden;padding-bottom:0}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:var(--radius);font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all .15s;white-space:nowrap;touch-action:manipulation}
+.btn-primary{background:var(--green);color:#fff}.btn-primary:hover{background:var(--green-dark);transform:translateY(-1px);box-shadow:0 4px 10px #22c55e25}
+.btn-ghost{background:#fff;color:var(--navy);border:1.5px solid var(--border)}.btn-ghost:hover{border-color:var(--green);color:var(--green);background:var(--green-light)}
+.btn-navy{background:var(--navy);color:#fff}.btn-navy:hover{background:#0f172a}
+.btn-danger{background:#fef2f2;color:var(--danger);border:1.5px solid #fecaca}.btn-danger:hover{background:#fee2e2}
+.btn-sm{padding:5px 11px;font-size:12px}
+.btn-full{width:100%;justify-content:center}
+
+/* CARDS */
+.card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:16px;box-shadow:var(--shadow)}
+.card:last-child{margin-bottom:0}
+.card-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;gap:10px;flex-wrap:wrap}
+.card-title{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+
+/* GRID */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
+.fgap{display:flex;gap:8px;flex-wrap:wrap}
+.fbetween{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.mt8{margin-top:8px}.mt16{margin-top:16px}
+
+/* STATS */
+.stat-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:18px;position:relative;overflow:hidden;box-shadow:var(--shadow)}
+.stat-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--ac,var(--border));border-radius:var(--radius) var(--radius) 0 0}
+.stat-lbl{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px}
+.stat-val{font-size:28px;font-weight:800;letter-spacing:-1px;font-family:'DM Mono',monospace;color:var(--navy)}
+.stat-chg{font-size:11px;color:var(--muted);margin-top:4px;font-family:'DM Mono',monospace}
+.stat-chg.up{color:var(--green-dark)}.stat-chg.dn{color:var(--danger)}
+
+/* TABLE */
+.tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;min-width:420px}
+thead th{text-align:left;padding:9px 14px;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);background:var(--surface);white-space:nowrap}
+tbody tr{border-bottom:1px solid var(--border);transition:background .1s;cursor:pointer}
+tbody tr:hover{background:var(--surface)}
+tbody td{padding:11px 14px;font-size:13px;vertical-align:middle}
+.mono{font-family:'DM Mono',monospace;font-size:11px}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;white-space:nowrap}
+.b-active{background:#dcfce7;color:#15803d}.b-paused{background:#fef3c7;color:#92400e}.b-draft{background:#f1f5f9;color:var(--muted)}.b-sent{background:#dbeafe;color:#1d4ed8}.b-replied{background:#f0fdf4;color:var(--green-dark)}
+
+/* PROGRESS */
+.prog-wrap{width:60px;height:4px;background:var(--surface2);border-radius:2px;overflow:hidden;display:inline-block;vertical-align:middle}
+.prog-fill{height:100%;background:var(--green);border-radius:2px}
+
+/* CHART BARS */
+.chart-rows{display:flex;flex-direction:column;gap:10px}
+.chart-row{display:flex;align-items:center;gap:10px}
+.chart-lbl{width:82px;color:var(--muted);font-family:'DM Mono',monospace;text-align:right;flex-shrink:0;font-size:11px}
+.chart-track{flex:1;height:8px;background:var(--surface2);border-radius:4px;overflow:hidden}
+.chart-fill{height:100%;border-radius:4px;transition:width .6s ease}
+.chart-pct{width:36px;text-align:right;font-family:'DM Mono',monospace;font-size:11px}
+
+/* FORMS */
+.fg{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+.flbl{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+.finput,.fselect,.ftextarea{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);padding:9px 12px;color:var(--text);font-size:13px;outline:none;transition:border-color .15s;width:100%}
+.finput:focus,.fselect:focus,.ftextarea:focus{border-color:var(--green);box-shadow:0 0 0 3px #22c55e12}
+.ftextarea{resize:vertical;min-height:90px;font-family:'DM Mono',monospace;font-size:12px;line-height:1.6}
+.fselect option{background:#fff}
+
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(15,23,42,.5);display:flex;align-items:flex-end;justify-content:center;z-index:200;backdrop-filter:blur(4px);animation:fi .15s ease}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+.modal{background:#fff;border:1px solid var(--border);border-radius:16px 16px 0 0;width:100%;max-width:600px;max-height:92vh;overflow-y:auto;animation:su .22s ease;box-shadow:0 -10px 40px rgba(0,0,0,.12)}
+@keyframes su{from{transform:translateY(30px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modal-hdr{padding:18px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;z-index:1}
+.modal-title{font-size:16px;font-weight:800;color:var(--navy)}
+.modal-close{background:none;border:none;color:var(--muted);font-size:22px;line-height:1;padding:2px 6px;transition:color .1s}
+.modal-close:hover{color:var(--navy)}
+.modal-body{padding:20px 22px}
+.modal-footer{padding:14px 22px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px;position:sticky;bottom:0;background:#fff}
+
+/* TOAST */
+.toast{position:fixed;bottom:72px;left:50%;transform:translateX(-50%);background:var(--navy);border-radius:10px;padding:10px 18px;font-size:13px;font-weight:600;color:#fff;z-index:400;animation:su .2s ease;pointer-events:none;white-space:nowrap;max-width:90vw;text-align:center;box-shadow:var(--shadow-md)}
+
+/* TOGGLE */
+.toggle-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);gap:12px}
+.t-label{font-size:13px;font-weight:600;color:var(--navy)}.t-desc{font-size:11px;color:var(--muted);margin-top:2px}
+.toggle{width:40px;height:22px;background:var(--border);border-radius:11px;position:relative;transition:background .2s;border:none;flex-shrink:0}
+.toggle.on{background:var(--green)}.toggle::after{content:'';position:absolute;width:16px;height:16px;background:#fff;border-radius:50%;top:3px;left:3px;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.toggle.on::after{transform:translateX(18px)}
+
+/* TAG INPUT */
+.tag-wrap{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);padding:5px 10px;display:flex;flex-wrap:wrap;gap:5px;align-items:center;cursor:text;min-height:42px;transition:border-color .15s}
+.tag-wrap:focus-within{border-color:var(--green);box-shadow:0 0 0 3px #22c55e12}
+.tag{background:var(--green-light);color:var(--green-dark);padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600;display:flex;align-items:center;gap:4px}
+.tag-del{background:none;border:none;color:var(--green-dark);font-size:14px;line-height:1;padding:0 1px}
+.tag-input{flex:1;min-width:100px;background:none;border:none;outline:none;color:var(--text);font-size:12px;font-family:'DM Mono',monospace;padding:2px 0}
+
+/* WEEK BARS */
+.week-chart{display:flex;align-items:flex-end;gap:8px;height:80px}
+.wbar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;height:100%;justify-content:flex-end}
+.wbar{width:100%;border-radius:4px 4px 0 0;min-height:3px;transition:height .4s ease}
+.wday{font-size:9px;color:var(--muted);font-family:'DM Mono',monospace}
+
+/* EMPTY */
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 20px;color:var(--muted);gap:10px;text-align:center}
+.empty-icon{font-size:36px;opacity:.4}.empty-txt{font-size:14px;font-weight:700;color:var(--navy)}.empty-sub{font-size:12px}
+
+/* CONTACTS */
+.avatar{width:34px;height:34px;border-radius:50%;background:var(--green-light);border:1.5px solid #bbf7d0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;color:var(--green-dark)}
+.contact-row{display:flex;align-items:center;gap:10px;padding:11px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s}
+.contact-row:hover{background:var(--surface)}
+.contact-name{font-size:13px;font-weight:700;color:var(--navy)}
+.contact-email{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace}
+.ctag{font-size:9px;background:var(--surface2);border:1px solid var(--border);color:var(--muted);padding:1px 7px;border-radius:10px}
+
+/* DROP ZONE */
+.drop-zone{border:2px dashed var(--border);border-radius:var(--radius);padding:28px 20px;text-align:center;cursor:pointer;transition:all .2s;background:var(--surface)}
+.drop-zone:hover,.drop-zone.drag{border-color:var(--green);background:var(--green-light)}
+.drop-zone input[type=file]{display:none}
+.drop-icon{font-size:30px;margin-bottom:8px;opacity:.5}
+.drop-txt{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:4px}.drop-sub{font-size:12px;color:var(--muted)}
+
+/* SEARCH */
+.search-wrap{position:relative;flex:1}
+.search-wrap input{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);padding:8px 12px 8px 34px;color:var(--text);font-size:13px;outline:none;width:100%;transition:border-color .15s}
+.search-wrap input:focus{border-color:var(--green);box-shadow:0 0 0 3px #22c55e12}
+.search-wrap::before{content:'🔍';position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:12px;pointer-events:none}
+
+/* INFO/WARN */
+.warn-box{background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:9px 12px;font-size:11px;color:#92400e;margin-top:6px}
+.info-box{background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:9px 12px;font-size:11px;color:#1d4ed8}
+.success-box{background:var(--green-light);border:1px solid #bbf7d0;border-radius:8px;padding:9px 12px;font-size:11px;color:var(--green-dark)}
+
+/* MOBILE NAV */
+.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;height:var(--mobile-nav-h);background:#fff;border-top:1px solid var(--border);z-index:50;padding:0 4px;align-items:center;justify-content:space-around;box-shadow:0 -1px 0 var(--border)}
+.mnav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px;border:none;background:none;color:var(--muted);font-size:9px;font-weight:700;transition:color .15s;position:relative;max-width:70px}
+.mnav-item.active{color:var(--green)}.mnav-item .micon{font-size:18px;line-height:1}
+.mnav-dot{position:absolute;top:4px;right:50%;transform:translateX(8px);width:7px;height:7px;border-radius:50%;background:var(--green);border:2px solid #fff}
+
+/* STEPS */
+.steps{display:flex;flex-direction:column;gap:10px}
+.step{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px;display:flex;align-items:flex-start;gap:10px;position:relative}
+.step-connector{position:absolute;left:22px;top:42px;bottom:-10px;width:1px;background:var(--border)}
+.step-num{width:24px;height:24px;min-width:24px;background:var(--green-light);color:var(--green-dark);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800}
+
+/* COMPOSE TOOLBAR */
+.ctoolbar{display:flex;gap:4px;padding:7px 10px;border-bottom:1px solid var(--border);flex-wrap:wrap;background:var(--surface)}
+.tbtn{background:#fff;border:1px solid var(--border);color:var(--muted);padding:3px 7px;border-radius:5px;font-size:10px;font-family:'DM Mono',monospace;transition:all .1s}
+.tbtn:hover{border-color:var(--green);color:var(--green-dark)}
+
+/* INBOX */
+.inbox-wrap{display:flex;height:calc(100vh - var(--topbar-h))}
+.inbox-list{width:290px;min-width:290px;border-right:1px solid var(--border);overflow-y:auto;background:#fff}
+.imail{padding:13px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s;position:relative}
+.imail:hover{background:var(--surface)}.imail.sel{background:var(--green-light);border-left:2px solid var(--green)}
+.imail.unread .isub{font-weight:700;color:var(--navy)}
+.ifrom{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:2px;display:flex;align-items:center;gap:5px;padding-right:52px}
+.isub{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.itime{font-size:10px;color:var(--muted2);font-family:'DM Mono',monospace;position:absolute;top:13px;right:12px}
+.unread-dot{width:7px;height:7px;border-radius:50%;background:var(--green);flex-shrink:0}
+.inbox-detail{flex:1;padding:22px;overflow-y:auto;background:var(--surface)}
+.detail-subj{font-size:20px;font-weight:800;color:var(--navy);letter-spacing:-.5px;margin-bottom:10px}
+.detail-meta{font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:3px;padding-bottom:14px;border-bottom:1px solid var(--border);margin-bottom:16px}
+.detail-body{font-size:13px;line-height:1.9;white-space:pre-wrap;font-family:'DM Mono',monospace;color:var(--text)}
+.back-btn{display:none;margin-bottom:12px}
+
+/* ═══════════════════════════════════════
+   PRICING PAGE
+═══════════════════════════════════════ */
+.pricing-page{background:var(--surface);overflow-y:auto;padding:0;height:100%}
+.pricing-hero{background:var(--navy);padding:52px 24px 40px;text-align:center;position:relative;overflow:hidden}
+.pricing-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,#22c55e18 0%,transparent 60%)}
+.pricing-hero h1{font-size:34px;font-weight:800;color:#fff;letter-spacing:-.5px;margin-bottom:10px;position:relative}
+.pricing-hero h1 span{color:var(--green)}
+.pricing-hero p{font-size:15px;color:#94a3b8;max-width:500px;margin:0 auto;line-height:1.6;position:relative}
+.pricing-toggle{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:24px;position:relative}
+.pricing-toggle span{font-size:13px;font-weight:600;color:#94a3b8}
+.pricing-toggle span.active-lbl{color:#fff}
+.tog-wrap{width:48px;height:26px;background:rgba(255,255,255,.15);border-radius:13px;cursor:pointer;position:relative;transition:background .2s;border:none}
+.tog-wrap.yearly{background:var(--green)}
+.tog-wrap::after{content:'';position:absolute;width:20px;height:20px;background:#fff;border-radius:50%;top:3px;left:3px;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.tog-wrap.yearly::after{transform:translateX(22px)}
+.annual-badge{background:var(--green);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;margin-left:4px}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding:32px 24px;max-width:1060px;margin:0 auto}
+.price-card{background:#fff;border:1.5px solid var(--border);border-radius:16px;padding:28px 24px;position:relative;transition:all .2s;box-shadow:var(--shadow)}
+.price-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+.price-card.popular{border-color:var(--green);box-shadow:0 0 0 3px #22c55e20,var(--shadow-lg)}
+.popular-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--green);color:#fff;font-size:11px;font-weight:700;padding:3px 14px;border-radius:20px;white-space:nowrap}
+.plan-name{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.plan-tagline{font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:20px;min-height:50px}
+.plan-price{font-size:40px;font-weight:800;color:var(--navy);letter-spacing:-1.5px;line-height:1}
+.plan-price sup{font-size:18px;font-weight:700;vertical-align:top;margin-top:6px;display:inline-block}
+.plan-price sub{font-size:14px;font-weight:500;color:var(--muted);letter-spacing:0}
+.plan-price-annual{font-size:12px;color:var(--muted);margin-top:4px;min-height:16px}
+.plan-cta{width:100%;padding:11px;border-radius:var(--radius);font-size:14px;font-weight:700;cursor:pointer;border:none;transition:all .15s;margin:20px 0;display:flex;align-items:center;justify-content:center;gap:6px}
+.plan-cta-primary{background:var(--green);color:#fff}.plan-cta-primary:hover{background:var(--green-dark)}
+.plan-cta-outline{background:#fff;color:var(--navy);border:1.5px solid var(--border)}.plan-cta-outline:hover{border-color:var(--green);color:var(--green);background:var(--green-light)}
+.plan-divider{height:1px;background:var(--border);margin:16px 0}
+.plan-features{display:flex;flex-direction:column;gap:9px}
+.plan-feat{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--text)}
+.plan-feat-check{color:var(--green);font-size:14px;flex-shrink:0;margin-top:1px;font-weight:700}
+.plan-feat-extra{color:var(--muted);font-size:11px;margin-left:22px;margin-top:-4px}
+.pricing-faq{max-width:760px;margin:0 auto;padding:32px 24px 60px}
+.pricing-faq h2{font-size:24px;font-weight:800;color:var(--navy);text-align:center;margin-bottom:24px;letter-spacing:-.3px}
+.faq-item{border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px;background:#fff;overflow:hidden}
+.faq-q{padding:14px 18px;font-size:13px;font-weight:700;color:var(--navy);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.faq-a{padding:0 18px 14px;font-size:13px;color:var(--muted);line-height:1.7}
+.pricing-compare{max-width:900px;margin:0 auto;padding:0 24px 40px}
+.pricing-compare h2{font-size:22px;font-weight:800;color:var(--navy);text-align:center;margin-bottom:20px;letter-spacing:-.3px}
+.compare-table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+.compare-table th{padding:12px 16px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);text-align:center;background:var(--surface)}
+.compare-table th:first-child{text-align:left}
+.compare-table td{padding:11px 16px;font-size:13px;border-bottom:1px solid var(--border);text-align:center;color:var(--text)}
+.compare-table td:first-child{text-align:left;font-weight:600;color:var(--navy)}
+.compare-table tr:last-child td{border-bottom:none}
+.compare-table tr:hover td{background:var(--surface)}
+.check-yes{color:var(--green);font-weight:700;font-size:16px}
+.check-no{color:var(--muted2)}
+
+/* SMTP STATUS */
+.smtp-status{display:flex;align-items:center;gap:6px;font-size:11px;color:rgba(255,255,255,.4);font-family:'DM Mono',monospace}
+.dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.3);flex-shrink:0}.dot.on{background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* INTEGRATION CARDS */
+.int-card{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);padding:0;overflow:hidden;margin-bottom:14px;box-shadow:var(--shadow)}
+.int-card-hdr{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;flex-wrap:wrap;gap:12px}
+.int-card-body{border-top:1px solid var(--border);padding:18px 20px}
+.int-logo{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.trigger-card{background:var(--surface);border:1.5px solid var(--border);border-radius:8px;padding:10px;cursor:pointer;transition:all .15s}
+.trigger-card.on{border-color:var(--green);background:var(--green-light)}
+.trigger-card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .pricing-grid{grid-template-columns:1fr;max-width:400px}
+  .price-card.popular{margin:0}
+}
+@media(max-width:768px){
+  .auth-left{display:none}
+  .auth-right{width:100%;min-width:0;padding:36px 24px}
+  .sidebar{position:fixed;left:0;top:0;bottom:0;transform:translateX(-100%);z-index:60}
+  .sidebar.open{transform:translateX(0)}
+  .sidebar-overlay.show{display:block}
+  .menu-btn{display:flex}
+  .mobile-nav{display:flex}
+  .content{padding:14px;padding-bottom:calc(var(--mobile-nav-h) + 20px)}
+  .content.no-pad{padding-bottom:var(--mobile-nav-h)}
+  .grid4{grid-template-columns:1fr 1fr}
+  .grid2{grid-template-columns:1fr}
+  .grid3{grid-template-columns:1fr}
+  .topbar-actions .hide-mobile{display:none}
+  .topbar{padding:0 14px}
+  .inbox-list{width:100%;min-width:0;border-right:none}
+  .inbox-detail{display:none;position:fixed;inset:0;top:var(--topbar-h);background:var(--surface);z-index:30;overflow-y:auto;padding:16px;padding-bottom:calc(var(--mobile-nav-h)+20px)}
+  .inbox-detail.show{display:flex;flex-direction:column}
+  .back-btn{display:flex}
+  .inbox-wrap{height:calc(100vh - var(--topbar-h) - var(--mobile-nav-h))}
+  .plan-opts{grid-template-columns:1fr}
+  .toast{bottom:calc(var(--mobile-nav-h) + 12px)}
+  .pricing-hero h1{font-size:26px}
+  .plan-price{font-size:32px}
+}
+@media(min-width:769px){
+  .overlay{align-items:center}
+  .modal{border-radius:16px;max-height:85vh}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ AUTH SCREEN ═══ -->
+<div id="auth-screen">
+  <div class="auth-left">
+    <div class="auth-brand">
+      <div class="auth-brand-icon">📬</div>
+      <span class="auth-brand-name">Inboxmail</span>
+    </div>
+    <div class="auth-headline">Cold outreach that<br/><span>actually converts.</span></div>
+    <div class="auth-subhead">The all-in-one platform for agencies running high-volume email campaigns. Manage clients, sequences, and results — all in one place.</div>
+    <div class="auth-features">
+      <div class="auth-feat"><div class="auth-feat-icon">📊</div>Live analytics across all your campaigns</div>
+      <div class="auth-feat"><div class="auth-feat-icon">🔀</div>Multi-step sequences with smart delays</div>
+      <div class="auth-feat"><div class="auth-feat-icon">🔌</div>Native Google Sheets, Zapier & GHL integrations</div>
+      <div class="auth-feat"><div class="auth-feat-icon">👥</div>Multi-workspace agency support</div>
+      <div class="auth-feat"><div class="auth-feat-icon">🚫</div>Global DNC list management</div>
+    </div>
+  </div>
+  <div class="auth-right">
+    <div class="auth-tabs" id="auth-tabs">
+      <button class="auth-tab active" onclick="switchAuthTab('login')">Sign In</button>
+      <button class="auth-tab" onclick="switchAuthTab('signup')">Create Account</button>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <div id="login-form">
+      <div class="auth-form-title">Welcome back</div>
+      <div class="auth-form-sub">Sign in to your Inboxmail workspace</div>
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input class="form-input" id="login-email" type="email" placeholder="you@agency.com" value="demo@agency.com"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input class="form-input" id="login-pass" type="password" placeholder="••••••••" value="password"/>
+      </div>
+      <div style="display:flex;justify-content:flex-end;margin-bottom:18px">
+        <a href="#" style="font-size:12px;font-weight:600">Forgot password?</a>
+      </div>
+      <button class="btn-auth" onclick="doLogin()">Sign In →</button>
+      <div class="auth-divider">or continue with</div>
+      <button class="social-btn" onclick="doLogin()">🔵 Continue with Google</button>
+      <div class="auth-switch">Don't have an account? <a href="#" onclick="switchAuthTab('signup')">Sign up free</a></div>
+    </div>
+
+    <!-- SIGNUP FORM -->
+    <div id="signup-form" style="display:none">
+      <div class="auth-form-title">Start your free trial</div>
+      <div class="auth-form-sub">14 days free, no credit card required</div>
+      <div class="plan-selector">
+        <label class="form-label">Choose your plan</label>
+        <div class="plan-opts">
+          <div class="plan-opt" onclick="selectSignupPlan(this,'starter')">
+            <div class="plan-opt-name">Starter</div>
+            <div class="plan-opt-price">₹500/mo</div>
+          </div>
+          <div class="plan-opt selected" onclick="selectSignupPlan(this,'growth')">
+            <div class="plan-opt-name">Growth</div>
+            <div class="plan-opt-price">₹5,999/mo</div>
+          </div>
+          <div class="plan-opt" onclick="selectSignupPlan(this,'agency')">
+            <div class="plan-opt-name">Agency</div>
+            <div class="plan-opt-price">₹20,000/mo</div>
+          </div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="form-group">
+          <label class="form-label">First Name</label>
+          <input class="form-input" id="su-first" placeholder="Jane"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Last Name</label>
+          <input class="form-input" id="su-last" placeholder="Smith"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Work Email</label>
+        <input class="form-input" id="su-email" type="email" placeholder="you@agency.com"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Agency / Company Name</label>
+        <input class="form-input" id="su-company" placeholder="Acme Agency"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input class="form-input" id="su-pass" type="password" placeholder="Min 8 characters"/>
+      </div>
+      <button class="btn-auth" onclick="doSignup()">Start Free Trial →</button>
+      <div style="text-align:center;font-size:11px;color:var(--muted);margin-top:12px">By signing up you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.</div>
+      <div class="auth-switch">Already have an account? <a href="#" onclick="switchAuthTab('login')">Sign in</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MAIN APP ═══ -->
+<div id="app">
+  <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+  <div class="sidebar" id="sidebar">
+    <div class="logo">
+      <div class="logo-icon">📬</div>
+      <div class="logo-text">Inbox<span>mail</span></div>
+    </div>
+    <div class="workspace-switcher" onclick="showWorkspaceSwitcher()">
+      <div class="ws-icon" id="ws-icon">A</div>
+      <span class="ws-name" id="ws-name">Acme Agency</span>
+      <span class="ws-arrow">⌄</span>
+    </div>
+    <nav id="nav">
+      <span class="nav-section">Overview</span>
+      <button class="nav-item active" data-page="dashboard">📈 Dashboard</button>
+      <button class="nav-item" data-page="inbox">💌 Inbox<span class="nav-badge" id="unread-badge" style="display:none">0</span></button>
+      <span class="nav-section">Outreach</span>
+      <button class="nav-item" data-page="campaigns">📢 Campaigns</button>
+      <button class="nav-item" data-page="sequences">🔀 Sequences</button>
+      <button class="nav-item" data-page="contacts">👥 Contacts</button>
+      <button class="nav-item" data-page="dnc">🚫 Do Not Contact</button>
+      <span class="nav-section">Tools</span>
+      <button class="nav-item" data-page="analytics">📊 Analytics</button>
+      <button class="nav-item" data-page="integrations">🔌 Integrations</button>
+      <button class="nav-item" data-page="mailboxes">📬 Mailboxes</button>
+      <button class="nav-item" data-page="whitelabel">🎨 White Label</button>
+      <button class="nav-item" data-page="pricing">💎 Plans & Billing</button>
+      <button class="nav-item" data-page="settings">⚙️ Settings</button>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-pill" onclick="showUserMenu()">
+        <div class="user-avatar" id="user-avatar">J</div>
+        <div class="user-info">
+          <div class="user-name" id="user-name-display">Jane Smith</div>
+          <div class="user-plan" id="user-plan-display">Growth Plan</div>
+        </div>
+        <span class="user-dots">⋯</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="menu-btn" onclick="openSidebar()">☰</button>
+        <span class="page-title" id="page-title">Dashboard</span>
+      </div>
+      <div class="topbar-actions">
+        <button class="btn btn-ghost btn-sm hide-mobile" onclick="showPage('pricing')">💎 Upgrade</button>
+        <button class="btn btn-primary btn-sm" onclick="openCompose()">✉️ Compose</button>
+      </div>
+    </div>
+    <div class="content" id="content"></div>
+  </div>
+
+  <div class="mobile-nav" id="mobile-nav">
+    <button class="mnav-item active" data-page="dashboard"><span class="micon">📈</span><span>Home</span></button>
+    <button class="mnav-item" data-page="inbox"><span class="micon">💌</span><span>Inbox</span></button>
+    <button class="mnav-item" data-page="contacts"><span class="micon">👥</span><span>Contacts</span></button>
+    <button class="mnav-item" data-page="campaigns"><span class="micon">📢</span><span>Campaigns</span></button>
+    <button class="mnav-item" data-page="pricing"><span class="micon">💎</span><span>Plans</span></button>
+  </div>
+</div>
+
+<div class="toast" id="toast" style="display:none"></div>
+
+<script>
+// ═══════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════
+const A = {
+  user:null,
+  users:[
+    {id:1,first:'Jane',last:'Smith',email:'demo@agency.com',pass:'password',company:'Acme Agency',plan:'growth',workspaces:[{id:1,name:'Acme Agency',initials:'AA'},{id:2,name:'Client - TechFlow',initials:'TF'}],activeWs:0}
+  ]
+};
+
+const S = {
+  page:'dashboard',
+  smtp:{provider:'Custom SMTP',host:'',port:'587',user:'',pass:'',apiKey:'',fromName:'',fromEmail:'',connected:false},
+  toggles:{openTracking:true,clickTracking:true,unsubLink:true,autoFollowup:true,spintax:false,bounceHandle:true},
+  selectedEmail:null, mobileEmailOpen:false, composeTo:[], contactSearch:'',
+  pricingAnnual:false, selectedPlan:'growth', signupPlan:'growth',
+  contacts:[
+    {id:1,first:'Sarah',last:'Chen',email:'s.chen@techflow.io',company:'TechFlow',title:'Head of Growth',tags:['saas','warm'],status:'replied'},
+    {id:2,first:'Marcus',last:'Webb',email:'m.webb@growthlab.com',company:'GrowthLab',title:'CEO',tags:['agency'],status:'replied'},
+    {id:3,first:'Priya',last:'Nair',email:'p.nair@scalestudio.co',company:'Scale Studio',title:'Founder',tags:['saas'],status:'active'},
+    {id:4,first:'Jordan',last:'Kim',email:'j.kim@launchpad.vc',company:'Launchpad VC',title:'Partner',tags:['vc'],status:'unsubscribed'},
+    {id:5,first:'Alex',last:'Rivera',email:'a.rivera@basecamp.io',company:'Basecamp.io',title:'CTO',tags:['saas','warm'],status:'active'},
+    {id:6,first:'Dana',last:'Ortiz',email:'d.ortiz@sprout.co',company:'Sprout Co',title:'VP Sales',tags:['ecommerce'],status:'active'},
+  ],
+  campaigns:[
+    {id:1,name:'SaaS Decision Makers Q1',status:'active',sent:842,opens:312,clicks:89,replies:41,prospects:1200,startDate:'Mar 1'},
+    {id:2,name:'E-commerce Founders Feb',status:'paused',sent:530,opens:198,clicks:44,replies:19,prospects:600,startDate:'Feb 14'},
+    {id:3,name:'Agency Owners Outreach',status:'active',sent:221,opens:94,clicks:31,replies:14,prospects:400,startDate:'Mar 10'},
+    {id:4,name:'VC-backed Startups',status:'draft',sent:0,opens:0,clicks:0,replies:0,prospects:350,startDate:'—'},
+  ],
+  inbox:[
+    {id:1,from:'Sarah Chen',email:'s.chen@techflow.io',subject:'Re: Scaling your outreach',body:'Hi there,\n\nThanks for reaching out. This looks really interesting for our team. Could you schedule a quick 20-min call this week?\n\nBest,\nSarah',time:'2m ago',unread:true},
+    {id:2,from:'Marcus Webb',email:'m.webb@growthlab.com',subject:'Re: Quick question for Marcus',body:'Hey,\n\nYes I\'m definitely interested. When are you available for a call?\n\nMarcus',time:'1h ago',unread:true},
+    {id:3,from:'Priya Nair',email:'p.nair@scalestudio.co',subject:'Out of office: Back March 25',body:'I am currently out of office. Will return March 25th.\n\nUrgent: team@scalestudio.co\n\nPriya',time:'3h ago',unread:false},
+    {id:4,from:'Jordan Kim',email:'j.kim@launchpad.vc',subject:'Re: Improving cold outreach ROI',body:'Not interested at this time. Please remove me from your list.',time:'5h ago',unread:false},
+    {id:5,from:'Alex Rivera',email:'a.rivera@basecamp.io',subject:'Re: quick thought',body:'Interesting pitch. Can you send pricing details?\n\nAlex',time:'1d ago',unread:false},
+  ],
+  sequences:[
+    {id:1,name:'SaaS Decision Maker Flow',status:'active',prospects:1200,steps:[
+      {id:1,delay:0,subject:'Quick thought for {{company}}',body:'Hey {{first_name}},\n\nNoticed {{company}} is scaling fast.\n\nWe help teams like yours 3x reply rates. Worth a 15-min chat?\n\n{{sender_name}}'},
+      {id:2,delay:3,subject:'Re: Quick thought for {{company}}',body:'Hey {{first_name}},\n\nJust bumping this — still interested?\n\n{{sender_name}}'},
+      {id:3,delay:7,subject:'Last note — {{company}}',body:'Hey {{first_name}},\n\nLast reach out, promise.\n\n{{sender_name}}'},
+    ]},
+    {id:2,name:'Agency Owners 4-Step',status:'draft',prospects:400,steps:[
+      {id:1,delay:0,subject:'An idea for {{company}}',body:'Hey {{first_name}}, saw some interesting things about your agency...'},
+      {id:2,delay:2,subject:'Following up',body:'Wanted to follow up on my earlier email...'},
+    ]},
+  ],
+  dnc:{emails:['noreply@example.com','unsubscribed@testco.com'],domains:['competitor.com','spamtrap.io']},
+  analyticsTab:'overview',
+  brand:{logo:'',logoText:'Inboxmail',primaryColor:'#22c55e',subdomain:'acme',customDomain:'',faviconUrl:'',companyName:'Acme Agency',supportEmail:'support@acme.com',footerText:'Powered by Inboxmail'},
+  mailboxes:[
+    {id:1,name:'Jane Smith',email:'jane@acme.com',type:'smtp',host:'smtp.gmail.com',port:'587',user:'jane@acme.com',pass:'',connected:true,dailyLimit:100,sent:47,signature:'Best,\nJane Smith\nAcme Agency',warmup:false,active:true},
+    {id:2,name:'Alex Rivera',email:'alex@acme.com',type:'google',connected:false,dailyLimit:150,sent:0,signature:'Regards,\nAlex Rivera',warmup:false,active:false},
+  ],
+  mailboxRotation:{enabled:false,mode:'round-robin',mailboxIds:[1]},
+  unsubscribeDomain:'',unsubscribePath:'/unsub',unsubscribeMessage:'You have been unsubscribed and will no longer receive emails from us.',
+  customDomains:[{id:1,domain:'mail.acme.com',verified:true,dkim:true,spf:true,dmarc:false}],
+  contactProgress:[
+    {contactId:1,campaignId:1,sequenceId:1,currentStep:2,totalSteps:3,status:'active',nextSendDate:'Mar 24, 9:00am',lastSent:'Mar 21',opens:2,clicks:1,replies:1},
+    {contactId:2,campaignId:1,sequenceId:1,currentStep:3,totalSteps:3,status:'replied',nextSendDate:null,lastSent:'Mar 20',opens:1,clicks:0,replies:1},
+    {contactId:3,campaignId:1,sequenceId:1,currentStep:1,totalSteps:3,status:'active',nextSendDate:'Mar 23, 10:00am',lastSent:'Mar 21',opens:1,clicks:0,replies:0},
+    {contactId:4,campaignId:2,sequenceId:1,currentStep:2,totalSteps:3,status:'paused',nextSendDate:null,lastSent:'Mar 18',opens:0,clicks:0,replies:0},
+    {contactId:5,campaignId:1,sequenceId:1,currentStep:1,totalSteps:3,status:'active',nextSendDate:'Mar 25, 9:00am',lastSent:'Mar 22',opens:0,clicks:0,replies:0},
+    {contactId:6,campaignId:2,sequenceId:1,currentStep:3,totalSteps:3,status:'completed',nextSendDate:null,lastSent:'Mar 15',opens:1,clicks:1,replies:0},
+  ],
+  integrations:{
+    googleSheets:{connected:false,sheetId:'',sheetName:'Contacts',syncDirection:'both',autoSync:false,apiKey:''},
+    zapier:{connected:false,webhookUrl:'',triggers:{newReply:true,newContact:true,campaignComplete:false,unsubscribe:true}},
+    ghl:{connected:false,apiKey:'',locationId:'',pipeline:'',syncContacts:true,syncReplies:true,tagReplies:true,tagUnsubscribes:true}
+  },
+};
+
+const PLANS = {
+  starter:{name:'Starter',price:500,annual:425,senders:'1 Email Sender',linkedIn:'1 LinkedIn Account',workspaces:'1 Workspace',users:'1 User',contacts:'1,000 Contacts',emails:'3,000 Emails/mo',zapier:true,api:false,webhook:false,support:'Expert Support',extra:''},
+  growth:{name:'Growth',price:5999,annual:5099,senders:'Unlimited Senders',linkedIn:'Unlimited LinkedIn',workspaces:'1 Workspace',users:'Unlimited Users',contacts:'30,000 Contacts',emails:'100,000 Emails/mo',zapier:true,api:true,webhook:false,support:'Priority Support',extra:'+₹999/10k contacts'},
+  agency:{name:'Agency',price:20000,annual:17000,senders:'Unlimited Senders',linkedIn:'Unlimited LinkedIn',workspaces:'2 Workspaces',users:'Unlimited Users',contacts:'50,000 Contacts',emails:'300,000 Emails/mo',zapier:true,api:true,webhook:true,support:'Priority Support',extra:'+₹2,999/extra workspace · +₹999/10k contacts'},
+};
+
+// ═══════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════
+const $=id=>document.getElementById(id);
+const pct=(a,b)=>b?((a/b)*100).toFixed(1):'0.0';
+const fmt=n=>(+n).toLocaleString();
+const initials=c=>((c.first||'?')[0]+(c.last||'?')[0]).toUpperCase();
+const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+function toast(msg,dur=3000){const t=$('toast');t.innerHTML=msg;t.style.display='block';clearTimeout(t._t);t._t=setTimeout(()=>t.style.display='none',dur);}
+function openSidebar(){$('sidebar').classList.add('open');$('sidebar-overlay').classList.add('show');}
+function closeSidebar(){$('sidebar').classList.remove('open');$('sidebar-overlay').classList.remove('show');}
+
+// ═══════════════════════════════════════
+// AUTH
+// ═══════════════════════════════════════
+function switchAuthTab(tab){
+  document.querySelectorAll('.auth-tab').forEach((t,i)=>t.classList.toggle('active',(tab==='login'&&i===0)||(tab==='signup'&&i===1)));
+  $('login-form').style.display=tab==='login'?'block':'none';
+  $('signup-form').style.display=tab==='signup'?'block':'none';
+}
+
+function selectSignupPlan(el,plan){
+  document.querySelectorAll('.plan-opt').forEach(e=>e.classList.remove('selected'));
+  el.classList.add('selected');
+  S.signupPlan=plan;
+}
+
+function doLogin(){
+  const email=($('login-email')||{value:'demo@agency.com'}).value.trim();
+  const pass=($('login-pass')||{value:'password'}).value;
+  const user=A.users.find(u=>u.email===email&&u.pass===pass)||A.users[0];
+  if(!user){toast('⚠️ Invalid email or password');return;}
+  A.user=user;
+  launchApp();
+}
+
+function doSignup(){
+  const first=($('su-first')||{value:'Jane'}).value.trim()||'Jane';
+  const last=($('su-last')||{value:'Smith'}).value.trim()||'Smith';
+  const email=($('su-email')||{value:''}).value.trim();
+  const company=($('su-company')||{value:'My Agency'}).value.trim()||'My Agency';
+  const pass=($('su-pass')||{value:'password'}).value;
+  if(!email){toast('⚠️ Please enter your email');return;}
+  if(pass.length<8){toast('⚠️ Password must be at least 8 characters');return;}
+  const initLet=(company[0]||'A').toUpperCase();
+  const newUser={id:Date.now(),first,last,email,pass,company,plan:S.signupPlan,
+    workspaces:[{id:1,name:company,initials:initLet+(company[1]||'').toUpperCase()}],activeWs:0};
+  A.users.push(newUser);
+  A.user=newUser;
+  launchApp();
+}
+
+function launchApp(){
+  const u=A.user;
+  const authEl=$('auth-screen');
+  const appEl=$('app');
+  if(authEl){authEl.style.display='none';authEl.classList.add('hidden');}
+  if(appEl){appEl.style.display='flex';appEl.classList.add('show');}
+  // Update UI with user data
+  $('user-avatar').textContent=(u.first[0]||'U').toUpperCase();
+  $('user-name-display').textContent=u.first+' '+u.last;
+  $('user-plan-display').textContent=PLANS[u.plan]?.name+' Plan'||'Growth Plan';
+  const ws=u.workspaces[u.activeWs];
+  $('ws-icon').textContent=ws.initials.slice(0,2);
+  $('ws-name').textContent=ws.name;
+  showPage('dashboard');
+  toast('👋 Welcome to Inboxmail, '+u.first+'!');
+}
+
+// ═══════════════════════════════════════
+// NAV
+// ═══════════════════════════════════════
+document.getElementById('nav').addEventListener('click',e=>{const b=e.target.closest('.nav-item');if(b&&b.dataset.page){showPage(b.dataset.page);closeSidebar();}});
+document.getElementById('mobile-nav').addEventListener('click',e=>{const b=e.target.closest('.mnav-item');if(b)showPage(b.dataset.page);});
+
+function showPage(pg){
+  S.page=pg;S.mobileEmailOpen=false;
+  const c=$('content');
+  const isPricing=pg==='pricing';
+  c.className=isPricing?'content pricing-page':pg==='inbox'?'content no-pad':'content';
+  const r={dashboard:renderDashboard,inbox:renderInbox,contacts:renderContacts,campaigns:renderCampaigns,sequences:renderSequences,analytics:renderAnalytics,settings:renderSettings,dnc:renderDNC,integrations:renderIntegrations,pricing:renderPricing,mailboxes:renderMailboxes,whitelabel:renderWhiteLabel};
+  c.innerHTML=(r[pg]||(() => ''))();
+  updateNav();
+  if(pg==='inbox')bindInbox();
+  if(pg==='contacts')bindContacts();
+}
+
+function updateNav(){
+  const u=S.inbox.filter(e=>e.unread).length;
+  const b=$('unread-badge');
+  if(u>0){b.style.display='';b.textContent=u;}else{b.style.display='none';}
+  $('smtp-dot')&&($('smtp-dot').className='dot'+(S.smtp.connected?' on':''));
+  const titles={dashboard:'Dashboard',inbox:'Inbox',contacts:'Contacts',campaigns:'Campaigns',sequences:'Sequences',analytics:'Analytics',settings:'Settings',dnc:'Do Not Contact',integrations:'Integrations',pricing:'Plans & Billing',mailboxes:'Mailboxes',whitelabel:'White Label'};
+  $('page-title').textContent=titles[S.page]||'';
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active',n.dataset.page===S.page));
+  document.querySelectorAll('.mnav-item').forEach(n=>{
+    n.classList.toggle('active',n.dataset.page===S.page);
+    const d=n.querySelector('.mnav-dot');if(d)d.remove();
+    if(n.dataset.page==='inbox'&&u>0){const d=document.createElement('span');d.className='mnav-dot';n.appendChild(d);}
+  });
+}
+
+function showWorkspaceSwitcher(){
+  const u=A.user;if(!u)return;
+  const items=u.workspaces.map((ws,i)=>`<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;border-radius:8px;transition:background .1s;${u.activeWs===i?'background:var(--green-light)':''}" onclick="switchWorkspace(${i});closeModal()">
+    <div style="width:28px;height:28px;background:${u.activeWs===i?'var(--green)':'var(--navy)'};border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0">${ws.initials.slice(0,2)}</div>
+    <div><div style="font-size:13px;font-weight:700;color:var(--navy)">${esc(ws.name)}</div><div style="font-size:11px;color:var(--muted)">${u.activeWs===i?'Active workspace':'Click to switch'}</div></div>
+    ${u.activeWs===i?'<span style="margin-left:auto;color:var(--green);font-size:14px">✓</span>':''}
+  </div>`).join('');
+  const canAdd=u.plan==='agency'?u.workspaces.length<2+(u.extraWs||0):u.plan==='growth'?false:false;
+  openModal(`<div class="modal-hdr"><span class="modal-title">Switch Workspace</span><button class="modal-close" onclick="closeModal()">×</button></div>
+  <div class="modal-body">
+    ${items}
+    ${canAdd||u.plan==='agency'?`<button class="btn btn-ghost btn-full mt8" onclick="addWorkspace()">+ Add Workspace</button>`:''}
+    ${u.plan==='starter'||u.plan==='growth'?`<div class="info-box mt8">Upgrade to Agency Plan to add multiple workspaces.</div>`:''}
+  </div>`);
+}
+
+function switchWorkspace(idx){
+  if(!A.user)return;
+  A.user.activeWs=idx;
+  const ws=A.user.workspaces[idx];
+  $('ws-icon').textContent=ws.initials.slice(0,2);
+  $('ws-name').textContent=ws.name;
+  toast('✅ Switched to '+ws.name);
+  showPage(S.page);
+}
+
+function addWorkspace(){
+  closeModal();
+  const name=prompt('Workspace name (e.g. Client Name):');
+  if(!name)return;
+  const initLet=(name[0]||'W').toUpperCase()+(name[1]||'').toUpperCase();
+  A.user.workspaces.push({id:Date.now(),name,initials:initLet});
+  const ws=A.user.workspaces;
+  $('ws-icon').textContent=ws[ws.length-1].initials.slice(0,2);
+  $('ws-name').textContent=ws[ws.length-1].name;
+  A.user.activeWs=ws.length-1;
+  toast('✅ Workspace "'+name+'" created');
+}
+
+function showUserMenu(){
+  const u=A.user;
+  openModal(`<div class="modal-hdr"><span class="modal-title">Account</span><button class="modal-close" onclick="closeModal()">×</button></div>
+  <div class="modal-body">
+    <div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--surface);border-radius:10px;margin-bottom:16px">
+      <div style="width:44px;height:44px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:#fff">${u?u.first[0].toUpperCase():'U'}</div>
+      <div><div style="font-weight:800;font-size:15px;color:var(--navy)">${u?u.first+' '+u.last:'User'}</div><div style="font-size:12px;color:var(--muted)">${u?u.email:''}</div><div style="font-size:11px;color:var(--green-dark);margin-top:2px;font-weight:600">${u?PLANS[u.plan]?.name+' Plan':''}</div></div>
+    </div>
+    <button class="btn btn-ghost btn-full" style="margin-bottom:8px" onclick="closeModal();showPage('settings')">⚙️ Account Settings</button>
+    <button class="btn btn-ghost btn-full" style="margin-bottom:8px" onclick="closeModal();showPage('pricing')">💎 Upgrade Plan</button>
+    <button class="btn btn-danger btn-full" onclick="doLogout()">Sign Out</button>
+  </div>`);
+}
+
+function doLogout(){
+  A.user=null;
+  closeModal();
+  const appEl=$('app');const authEl=$('auth-screen');
+  if(appEl){appEl.style.display='none';appEl.classList.remove('show');}
+  if(authEl){authEl.style.display='flex';authEl.classList.remove('hidden');}
+  switchAuthTab('login');
+  toast('👋 Signed out successfully');
+}
+
+// ═══════════════════════════════════════
+// DASHBOARD
+// ═══════════════════════════════════════
+function renderDashboard(){
+  const cs=S.campaigns,u=A.user;
+  const sent=cs.reduce((a,c)=>a+c.sent,0),opens=cs.reduce((a,c)=>a+c.opens,0),clicks=cs.reduce((a,c)=>a+c.clicks,0),replies=cs.reduce((a,c)=>a+c.replies,0);
+  const unread=S.inbox.filter(e=>e.unread).length;
+  const wk=[{d:'Mon',v:124},{d:'Tue',v:198},{d:'Wed',v:176},{d:'Thu',v:231},{d:'Fri',v:189},{d:'Sat',v:42},{d:'Sun',v:17}];
+  const mx=Math.max(...wk.map(x=>x.v));
+  return`
+  <div style="margin-bottom:18px">
+    <div style="font-size:20px;font-weight:800;color:var(--navy);letter-spacing:-.4px">Good morning, ${u?u.first:'there'} 👋</div>
+    <div style="font-size:13px;color:var(--muted);margin-top:3px">Here's what's happening across your campaigns today.</div>
+  </div>
+  <div class="grid4">
+    <div class="stat-card" style="--ac:var(--blue)"><div class="stat-lbl">Emails Sent</div><div class="stat-val">${fmt(sent)}</div><div class="stat-chg up">↑ +12% this week</div></div>
+    <div class="stat-card" style="--ac:var(--green)"><div class="stat-lbl">Open Rate</div><div class="stat-val">${pct(opens,sent)}%</div><div class="stat-chg up">↑ +2.1% vs last wk</div></div>
+    <div class="stat-card" style="--ac:var(--purple)"><div class="stat-lbl">Reply Rate</div><div class="stat-val">${pct(replies,sent)}%</div><div class="stat-chg up">↑ +0.4% vs last wk</div></div>
+    <div class="stat-card" style="--ac:${unread>0?'var(--warn)':'var(--muted2)'}"><div class="stat-lbl">Unread Replies</div><div class="stat-val">${unread}</div><div class="stat-chg ${unread>0?'dn':''}">Needs attention</div></div>
+  </div>
+  <div class="grid2">
+    <div class="card"><div class="card-hdr"><span class="card-title">📊 Emails sent this week</span></div>
+      <div class="week-chart">${wk.map((x,i)=>`<div class="wbar-wrap"><div class="wbar" style="height:${Math.max(3,Math.round((x.v/mx)*70))}px;background:${i===3?'var(--green)':'#dcfce7'};border:1px solid ${i===3?'var(--green-dark)':'#bbf7d0'}"></div><span class="wday">${x.d}</span></div>`).join('')}</div>
+    </div>
+    <div class="card"><div class="card-hdr"><span class="card-title">🎯 Conversion funnel</span></div>
+      <div class="chart-rows">
+        ${[['Delivered','98','var(--blue)'],['Opened',pct(opens,sent),'var(--green)'],['Clicked',pct(clicks,sent),'var(--purple)'],['Replied',pct(replies,sent),'var(--warn)']].map(([l,p,c])=>`
+        <div class="chart-row"><span class="chart-lbl">${l}</span><div class="chart-track"><div class="chart-fill" style="width:${p}%;background:${c}"></div></div><span class="chart-pct" style="color:${c}">${p}%</span></div>`).join('')}
+      </div>
+    </div>
+  </div>
+  <div class="card"><div class="card-hdr"><span class="card-title">📋 Active Campaigns</span><button class="btn btn-ghost btn-sm" onclick="showPage('campaigns')">View all →</button></div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Campaign</th><th>Status</th><th>Sent</th><th>Open%</th><th>Reply%</th><th>Progress</th></tr></thead>
+      <tbody>${cs.map(c=>`<tr onclick="showPage('campaigns')">
+        <td style="font-weight:700;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(c.name)}</td>
+        <td><span class="badge b-${c.status}">${c.status}</span></td>
+        <td class="mono">${fmt(c.sent)}</td>
+        <td class="mono" style="color:var(--green-dark)">${pct(c.opens,c.sent)}%</td>
+        <td class="mono" style="color:#92400e">${pct(c.replies,c.sent)}%</td>
+        <td><div class="prog-wrap"><div class="prog-fill" style="width:${c.prospects?pct(c.sent,c.prospects):0}%"></div></div> <span class="mono" style="color:var(--muted)">${c.sent}/${c.prospects}</span></td>
+      </tr>`).join('')}</tbody>
+    </table></div>
+  </div>`;
+}
+
+// ═══════════════════════════════════════
+// INBOX
+// ═══════════════════════════════════════
+function renderInbox(){
+  const sel=S.selectedEmail;
+  return`<div class="inbox-wrap">
+    <div class="inbox-list" id="inbox-list">
+      ${S.inbox.map(e=>`<div class="imail ${e.unread?'unread':''} ${sel&&sel.id===e.id?'sel':''}" data-id="${e.id}">
+        <span class="itime">${esc(e.time)}</span>
+        <div class="ifrom">${esc(e.from)}${e.unread?'<span class="unread-dot"></span>':''}</div>
+        <div class="isub">${esc(e.subject)}</div>
+      </div>`).join('')}
+    </div>
+    <div class="inbox-detail ${S.mobileEmailOpen?'show':''}" id="inbox-detail">
+      <button class="btn btn-ghost btn-sm back-btn" onclick="closeEmailDetail()">← Back</button>
+      ${sel?renderEmailDetail(sel):'<div class="empty" style="margin:auto"><div class="empty-icon">💌</div><div class="empty-txt">Select an email to read</div></div>'}
+    </div>
+  </div>`;
+}
+function renderEmailDetail(e){return`<div class="detail-subj">${esc(e.subject)}</div><div class="detail-meta"><span><strong>From:</strong> ${esc(e.from)} &lt;${esc(e.email)}&gt;</span><span><strong>Time:</strong> ${esc(e.time)}</span></div><div class="detail-body">${esc(e.body)}</div><div class="fgap mt16"><button class="btn btn-primary btn-sm">↩ Reply</button><button class="btn btn-ghost btn-sm">🗓 Book Call</button><button class="btn btn-ghost btn-sm">🚫 Unsub</button></div>`;}
+function closeEmailDetail(){S.mobileEmailOpen=false;S.selectedEmail=null;const d=$('inbox-detail');if(d){d.classList.remove('show');d.innerHTML='<button class="btn btn-ghost btn-sm back-btn" onclick="closeEmailDetail()">← Back</button><div class="empty" style="margin:auto"><div class="empty-icon">💌</div><div class="empty-txt">Select an email</div></div>';}document.querySelectorAll('.imail').forEach(m=>m.classList.remove('sel'));}
+function bindInbox(){
+  $('inbox-list').addEventListener('click',e=>{
+    const row=e.target.closest('.imail');if(!row)return;
+    const id=+row.dataset.id,email=S.inbox.find(x=>x.id===id);if(!email)return;
+    email.unread=false;S.selectedEmail=email;S.mobileEmailOpen=true;
+    const d=$('inbox-detail');
+    if(d){d.innerHTML='<button class="btn btn-ghost btn-sm back-btn" onclick="closeEmailDetail()">← Back</button>'+renderEmailDetail(email);d.classList.add('show');}
+    document.querySelectorAll('.imail').forEach(m=>m.classList.toggle('sel',+m.dataset.id===id));
+    updateNav();
+  });
+}
+
+// ═══════════════════════════════════════
+// CONTACTS
+// ═══════════════════════════════════════
+function renderContacts(){
+  const q=S.contactSearch.toLowerCase();
+  const filtered=S.contacts.filter(c=>!q||[c.first,c.last,c.email,c.company].some(v=>(v||'').toLowerCase().includes(q)));
+  const sc={active:'var(--green-dark)',replied:'var(--blue)',unsubscribed:'var(--danger)'};
+  return`<div class="card" style="margin-bottom:14px">
+    <div class="fbetween"><div class="search-wrap" style="min-width:150px;max-width:300px"><input id="contact-search" placeholder="Search contacts..." value="${esc(S.contactSearch)}"/></div>
+      <div class="fgap">
+        <button class="btn btn-ghost btn-sm" onclick="openImportCSV()">⬆️ Import CSV</button>
+        <button class="btn btn-ghost btn-sm" onclick="exportCSV()">⬇️ Export</button>
+        <button class="btn btn-primary btn-sm" onclick="openContactModal(null)">+ Add Contact</button>
+      </div>
+    </div>
+  </div>
+  <div class="card" style="padding:0;overflow:hidden">
+    <div style="padding:11px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:var(--surface)">
+      <span class="card-title">${filtered.length} contact${filtered.length!==1?'s':''}</span>
+      <span class="mono" style="color:var(--muted)">${S.contacts.length} total</span>
+    </div>
+    ${filtered.length===0?`<div class="empty"><div class="empty-icon">👤</div><div class="empty-txt">No contacts found</div><div class="empty-sub">Import a CSV or add manually</div></div>`:''}
+    ${filtered.map(c=>`<div class="contact-row" onclick="openContactModal(${c.id})">
+      <div class="avatar">${initials(c)}</div>
+      <div style="flex:1;min-width:0">
+        <div class="contact-name">${esc(c.first)} ${esc(c.last)}</div>
+        <div class="contact-email">${esc(c.email)}</div>
+        <div style="display:flex;gap:3px;flex-wrap:wrap;margin-top:2px">${(c.tags||[]).map(t=>`<span class="ctag">${esc(t)}</span>`).join('')}</div>
+      </div>
+      <div style="flex-shrink:0;text-align:right">
+        <div style="font-size:11px;color:var(--muted)">${esc(c.company)}</div>
+        <div style="font-size:10px;margin-top:3px;font-family:'DM Mono',monospace;color:${sc[c.status]||'var(--muted)'}">● ${c.status}</div>
+      </div>
+    </div>`).join('')}
+  </div>`;
+}
+function bindContacts(){const inp=$('contact-search');if(inp){inp.addEventListener('input',e=>{S.contactSearch=e.target.value;$('content').innerHTML=renderContacts();bindContacts();});}}
+function openContactModal(idOrNull){
+  const c=typeof idOrNull==='number'?S.contacts.find(x=>x.id===idOrNull):null;
+  const isNew=!c,d=c||{first:'',last:'',email:'',company:'',title:'',tags:[],status:'active'};
+  openModal(`<div class="modal-hdr"><span class="modal-title">${isNew?'➕ New':'✏️ Edit'} Contact</span><button class="modal-close" onclick="closeModal()">×</button></div>
+  <div class="modal-body">
+    <div class="grid2" style="gap:10px">
+      <div class="fg"><label class="flbl">First Name</label><input class="finput" id="cf-first" value="${esc(d.first)}" placeholder="Jane"/></div>
+      <div class="fg"><label class="flbl">Last Name</label><input class="finput" id="cf-last" value="${esc(d.last)}" placeholder="Smith"/></div>
+    </div>
+    <div class="fg"><label class="flbl">Email *</label><input class="finput" id="cf-email" type="email" value="${esc(d.email)}" placeholder="jane@company.com"/></div>
+    <div class="grid2" style="gap:10px">
+      <div class="fg"><label class="flbl">Company</label><input class="finput" id="cf-company" value="${esc(d.company)}" placeholder="Acme Inc"/></div>
+      <div class="fg"><label class="flbl">Job Title</label><input class="finput" id="cf-title" value="${esc(d.title)}" placeholder="CEO"/></div>
+    </div>
+    <div class="fg"><label class="flbl">Tags (comma-separated)</label><input class="finput" id="cf-tags" value="${esc((d.tags||[]).join(', '))}" placeholder="saas, warm, q2"/></div>
+    <div class="fg"><label class="flbl">Status</label><select class="fselect" id="cf-status">${['active','replied','unsubscribed'].map(s=>`<option value="${s}"${d.status===s?' selected':''}>${s}</option>`).join('')}</select></div>
+    ${!isNew?`<div style="margin-top:6px"><button class="btn btn-danger btn-sm" onclick="deleteContact(${d.id})">🗑 Delete</button></div>`:''}
+  </div>
+  <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal()">Cancel</button><button class="btn btn-primary" onclick="saveContact(${isNew?'null':d.id})">Save</button></div>`);
+}
+function saveContact(id){
+  const email=($('cf-email')||{value:''}).value.trim();if(!email){toast('⚠️ Email required');return;}
+  const obj={first:($('cf-first')||{value:''}).value.trim(),last:($('cf-last')||{value:''}).value.trim(),email,company:($('cf-company')||{value:''}).value.trim(),title:($('cf-title')||{value:''}).value.trim(),tags:($('cf-tags')||{value:''}).value.split(',').map(t=>t.trim()).filter(Boolean),status:($('cf-status')||{value:'active'}).value};
+  if(id===null||id==='null'){S.contacts.push({id:Date.now(),...obj});toast('✅ Contact added');}
+  else{const i=S.contacts.findIndex(c=>c.id===+id);if(i>-1)S.contacts[i]={...S.contacts[i],...obj};toast('✅ Contact updated');}
+  closeModal();showPage('contacts');
+}
+function deleteContact(id){S.contacts=S.contacts.filter(c=>c.id!==id);closeModal();showPage('contacts');toast('🗑 Contact deleted');}
+
+// CSV helpers
+window._csvRows=[];
+function dragOver(e){e.preventDefault();const t=e.currentTarget;if(t)t.classList.add('drag');}
+function dragLeave(e){const t=e.currentTarget;if(t)t.classList.remove('drag');}
+function dropFile(e){e.preventDefault();dragLeave(e);const f=e.dataTransfer&&e.dataTransfer.files[0];if(f)handleCSVFile(f);}
+function splitCSVLine(line){const r=[];let c='',q=false;for(let i=0;i<line.length;i++){if(line[i]==='"'){q=!q;}else if(line[i]===','&&!q){r.push(c);c='';}else{c+=line[i];}}r.push(c);return r;}
+function parseCSV(text){
+  const lines=text.trim().split(/\r?\n/);if(!lines.length)return[];
+  const headers=lines[0].split(',').map(h=>h.trim().toLowerCase().replace(/["']/g,''));
+  const rows=[];
+  for(let i=1;i<lines.length;i++){if(!lines[i].trim())continue;const vals=splitCSVLine(lines[i]);const obj={};headers.forEach((h,j)=>{obj[h]=(vals[j]||'').replace(/^["']|["']$/g,'').trim();});if(!obj.email)continue;rows.push({id:Date.now()+i,first:obj.first||'',last:obj.last||'',email:obj.email,company:obj.company||'',title:obj.title||'',tags:(obj.tags||'').split('|').map(t=>t.trim()).filter(Boolean),status:(['active','replied','unsubscribed'].includes(obj.status)?obj.status:'active')});}
+  return rows;
+}
+function handleCSVFile(file){if(!file)return;const r=new FileReader();r.onload=ev=>{const rows=parseCSV(ev.target.result);window._csvRows=rows;const preview=$('csv-preview'),btn=$('import-btn');if(!rows.length){if(preview)preview.innerHTML='<div class="warn-box" style="margin-top:10px">No valid rows found.</div>';return;}if(btn){btn.style.display='';btn.textContent=`Import ${rows.length} Contacts`;}if(preview)preview.innerHTML=`<div class="success-box" style="margin-top:10px">Found ${rows.length} contacts. <strong>First 5 rows preview below.</strong></div><div class="tbl-wrap" style="max-height:150px;overflow-y:auto;margin-top:8px"><table style="min-width:240px"><thead><tr><th>Name</th><th>Email</th><th>Company</th></tr></thead><tbody>${rows.slice(0,5).map(r=>`<tr><td>${esc(r.first)} ${esc(r.last)}</td><td class="mono">${esc(r.email)}</td><td>${esc(r.company)}</td></tr>`).join('')}${rows.length>5?`<tr><td colspan="3" style="color:var(--muted);text-align:center;font-size:11px">...and ${rows.length-5} more</td></tr>`:''}</tbody></table></div>`;};r.readAsText(file);}
+function openImportCSV(){openModal(`<div class="modal-hdr"><span class="modal-title">⬆️ Import Contacts</span><button class="modal-close" onclick="closeModal()">×</button></div><div class="modal-body"><div class="info-box" style="margin-bottom:12px">Columns: <strong>first, last, email, company, title, tags, status</strong><br/>Only <strong>email</strong> is required. Tags: pipe-separated (saas|warm).</div><div class="drop-zone" id="drop-zone" onclick="$('csv-file-input').click()" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dropFile(event)"><input type="file" id="csv-file-input" accept=".csv" onchange="handleCSVFile(this.files[0])"/><div class="drop-icon">📂</div><div class="drop-txt">Click or drag & drop CSV</div><div class="drop-sub">Max 10MB</div></div><div id="csv-preview"></div><button class="btn btn-ghost btn-sm mt8" onclick="downloadTemplate()">⬇️ Download Template</button></div><div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal()">Cancel</button><button class="btn btn-primary" id="import-btn" style="display:none" onclick="confirmImport()">Import</button></div>`);}
+function confirmImport(){const rows=window._csvRows||[];if(!rows.length)return;let added=0,skipped=0;rows.forEach(r=>{if(S.contacts.find(c=>c.email.toLowerCase()===r.email.toLowerCase())){skipped++;}else{S.contacts.push(r);added++;}});closeModal();showPage('contacts');toast(`✅ Imported ${added} contacts${skipped?` (${skipped} duplicates skipped)`:''}`,4000);}
+function downloadTemplate(){downloadBlob('first,last,email,company,title,tags,status\nJane,Smith,jane@co.com,Acme,CEO,saas|warm,active','contacts_template.csv');toast('⬇️ Template downloaded');}
+function exportCSV(){if(!S.contacts.length){toast('⚠️ No contacts to export');return;}const hdr='first,last,email,company,title,tags,status';const rows=S.contacts.map(c=>[c.first,c.last,c.email,c.company,c.title,(c.tags||[]).join('|'),c.status].map(v=>`"${String(v||'').replace(/"/g,'""')}"`).join(','));downloadBlob([hdr,...rows].join('\n'),`contacts_${new Date().toISOString().slice(0,10)}.csv`);toast(`⬇️ Exported ${S.contacts.length} contacts`);}
+function downloadBlob(text,filename){const blob=new Blob([text],{type:'text/csv;charset=utf-8;'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(()=>URL.revokeObjectURL(url),1000);}
+
+// ═══════════════════════════════════════
+// CAMPAIGNS
+// ═══════════════════════════════════════
+function renderCampaigns(){
+  return`<div class="card"><div class="card-hdr"><span class="card-title">All Campaigns (${S.campaigns.length})</span><button class="btn btn-primary btn-sm" onclick="openNewCampaign()">+ New Campaign</button></div>
+  <div class="tbl-wrap"><table><thead><tr><th>Name</th><th>Status</th><th>Started</th><th>Sent</th><th>Open%</th><th>Reply%</th><th></th></tr></thead>
+  <tbody>${S.campaigns.map(c=>`<tr><td style="font-weight:700;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(c.name)}</td><td><span class="badge b-${c.status}">${c.status}</span></td><td class="mono" style="color:var(--muted)">${c.startDate}</td><td class="mono">${fmt(c.sent)}</td><td class="mono" style="color:var(--green-dark)">${pct(c.opens,c.sent)}%</td><td class="mono" style="color:#92400e">${pct(c.replies,c.sent)}%</td>
+  <td>${c.status==='draft'?`<button class="btn btn-primary btn-sm" onclick="launchCampaign(${c.id})">▶ Launch</button>`:c.status==='active'?`<button class="btn btn-ghost btn-sm" onclick="toggleCampaign(${c.id})">⏸ Pause</button>`:`<button class="btn btn-primary btn-sm" onclick="toggleCampaign(${c.id})">▶ Resume</button>`}</td></tr>`).join('')}</tbody></table></div></div>`;
+}
+function toggleCampaign(id){const c=S.campaigns.find(x=>x.id===id);if(!c)return;c.status=c.status==='active'?'paused':'active';showPage('campaigns');toast(c.status==='active'?'▶ Campaign resumed':'⏸ Campaign paused');}
+function launchCampaign(id){const c=S.campaigns.find(x=>x.id===id);if(c){c.status='active';c.startDate='Mar 21';}showPage('campaigns');toast('🚀 Campaign launched!');}
+function openNewCampaign(){openModal(`<div class="modal-hdr"><span class="modal-title">➕ New Campaign</span><button class="modal-close" onclick="closeModal()">×</button></div><div class="modal-body"><div class="fg"><label class="flbl">Campaign Name</label><input class="finput" id="nc-name" placeholder="e.g. SaaS Founders Q2"/></div><div class="fg"><label class="flbl">Sequence</label><select class="fselect">${S.sequences.map(s=>`<option>${esc(s.name)}</option>`).join('')}</select></div><div class="grid2" style="gap:10px"><div class="fg"><label class="flbl">Daily Limit</label><input class="finput" type="number" value="50"/></div><div class="fg"><label class="flbl">Schedule</label><select class="fselect"><option>Weekdays 9am–5pm</option><option>Weekdays 8am–6pm</option></select></div></div></div><div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal()">Cancel</button><button class="btn btn-primary" onclick="saveCampaign()">Create</button></div>`);}
+function saveCampaign(){const n=($('nc-name')||{value:''}).value.trim();if(!n){toast('⚠️ Enter a name');return;}S.campaigns.push({id:Date.now(),name:n,status:'draft',sent:0,opens:0,clicks:0,replies:0,prospects:0,startDate:'—'});closeModal();showPage('campaigns');toast('✅ Campaign created');}
+
+// ═══════════════════════════════════════
+// SEQUENCES
+// ═══════════════════════════════════════
+function renderSequences(){
+  if(!S.sequences.length)return`<div class="fbetween" style="margin-bottom:14px"><div></div><button class="btn btn-primary" onclick="openNewSeq()">+ New Sequence</button></div><div class="empty"><div class="empty-icon">📋</div><div class="empty-txt">No sequences yet</div></div>`;
+  return`<div class="fbetween" style="margin-bottom:14px"><div></div><button class="btn btn-primary" onclick="openNewSeq()">+ New Sequence</button></div>
+  ${S.sequences.map(seq=>`<div class="card"><div class="card-hdr"><div><div style="font-weight:800;font-size:15px;color:var(--navy);margin-bottom:4px">${esc(seq.name)}</div><span class="badge b-${seq.status}">${seq.status}</span><span class="mono" style="color:var(--muted);font-size:10px;margin-left:8px">${seq.steps.length} steps · ${seq.prospects} prospects</span></div><button class="btn btn-ghost btn-sm" onclick="openEditSeq(${seq.id})">✏️ Edit</button></div>
+  <div class="steps">${seq.steps.map((s,i)=>`<div class="step">${i<seq.steps.length-1?'<div class="step-connector"></div>':''}<div class="step-num">${i+1}</div><div><div style="font-weight:700;font-size:12px;color:var(--navy)">${esc(s.subject)||'(No subject)'}</div><div style="font-size:10px;color:var(--muted);margin-top:2px">${i===0?'Send immediately':'Wait '+s.delay+' day'+(s.delay!==1?'s':'')}</div></div></div>`).join('')}</div></div>`).join('')}`;
+}
+function openNewSeq(){openSeqModal(null);}
+function openEditSeq(id){openSeqModal(S.sequences.find(s=>s.id===id));}
+function openSeqModal(seq){window._seqEdit=seq?JSON.parse(JSON.stringify(seq)):{id:null,name:'',steps:[{id:1,delay:0,subject:'',body:''}]};renderSeqModal();}
+function renderSeqModal(){
+  const s=window._seqEdit;
+  openModal(`<div class="modal-hdr"><span class="modal-title">${s.id?'✏️ Edit':'➕ New'} Sequence</span><button class="modal-close" onclick="closeModal()">×</button></div>
+  <div class="modal-body">
+    <div class="fg"><label class="flbl">Sequence Name</label><input class="finput" id="seq-name" value="${esc(s.name)}" placeholder="e.g. SaaS Founders Q2"/></div>
+    <div class="flbl" style="margin-bottom:8px">Steps</div>
+    <div class="steps" id="seq-steps">
+      ${s.steps.map((step,i)=>`<div class="step"><div class="step-num">${i+1}</div>${i<s.steps.length-1?'<div class="step-connector"></div>':''}
+      <div style="flex:1;display:flex;flex-direction:column;gap:6px">
+        <div class="fg" style="margin-bottom:0"><label class="flbl">Delay (days)</label><input class="finput" type="number" min="0" value="${step.delay}" onchange="updateSeqStep(${step.id},'delay',+this.value)"/></div>
+        <input class="finput" placeholder="Subject line..." value="${esc(step.subject)}" oninput="updateSeqStep(${step.id},'subject',this.value)"/>
+        <textarea class="ftextarea" style="min-height:70px" placeholder="Body... Use {{first_name}}, {{company}}" oninput="updateSeqStep(${step.id},'body',this.value)">${esc(step.body)}</textarea>
+      </div>
+      ${s.steps.length>1?`<button class="btn btn-danger btn-sm" style="align-self:flex-start;padding:5px 8px" onclick="removeSeqStep(${step.id})">✕</button>`:''}</div>`).join('')}
+    </div>
+    <button class="btn btn-ghost btn-full mt8" onclick="addSeqStep()">+ Add Step</button>
+  </div>
+  <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal()">Cancel</button><button class="btn btn-primary" onclick="saveSeq()">Save</button></div>`);
+}
+function updateSeqStep(id,k,v){const s=window._seqEdit.steps.find(x=>x.id===id);if(s)s[k]=v;}
+function addSeqStep(){window._seqEdit.steps.push({id:Date.now(),delay:3,subject:'',body:''});renderSeqModal();}
+function removeSeqStep(id){window._seqEdit.steps=window._seqEdit.steps.filter(s=>s.id!==id);renderSeqModal();}
+function saveSeq(){const name=($('seq-name')||{value:''}).value.trim();if(!name){toast('⚠️ Enter a name');return;}window._seqEdit.name=name;if(window._seqEdit.id){const i=S.sequences.findIndex(s=>s.id===window._seqEdit.id);if(i>-1)S.sequences[i]={...S.sequences[i],...window._seqEdit};}else{S.sequences.push({...window._seqEdit,id:Date.now(),status:'draft',prospects:0});}closeModal();showPage('sequences');toast('✅ Sequence saved');}
+
+// ═══════════════════════════════════════
+// ANALYTICS
+// ═══════════════════════════════════════
+function renderAnalytics(){
+  const tab=S.analyticsTab||'overview';
+  return`<div style="display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap">
+    ${[['overview','📊 Overview'],['sequence','🔀 Sequence Tracker'],['schedule','🗓 Next Scheduled']].map(([k,l])=>`<button class="btn ${tab===k?'btn-navy':'btn-ghost'} btn-sm" onclick="setAnalyticsTab('${k}')">${l}</button>`).join('')}
+    <button class="btn btn-ghost btn-sm" style="margin-left:auto" onclick="${tab==='sequence'?'exportSequenceCSV()':tab==='schedule'?'exportScheduleCSV()':'exportAnalyticsCSV()'}">⬇️ Export CSV</button>
+  </div>
+  ${tab==='overview'?renderAnalyticsOverview():''}
+  ${tab==='sequence'?renderSequenceTracker():''}
+  ${tab==='schedule'?renderNextSchedule():''}`;
+}
+function setAnalyticsTab(t){S.analyticsTab=t;showPage('analytics');}
+
+function renderAnalyticsOverview(){
+  const cs=S.campaigns,sent=cs.reduce((a,c)=>a+c.sent,0),opens=cs.reduce((a,c)=>a+c.opens,0),clicks=cs.reduce((a,c)=>a+c.clicks,0),replies=cs.reduce((a,c)=>a+c.replies,0);
+  const tR=[['9–10 AM',72],['10–11 AM',84],['11–12 PM',61],['1–2 PM',44],['2–3 PM',38],['3–4 PM',29]];
+  const dR=[['Monday',68],['Tuesday',76],['Wednesday',71],['Thursday',62],['Friday',48],['Saturday',12]];
+  return`<div class="grid4">
+    <div class="stat-card" style="--ac:var(--blue)"><div class="stat-lbl">Total Sent</div><div class="stat-val">${fmt(sent)}</div></div>
+    <div class="stat-card" style="--ac:var(--green)"><div class="stat-lbl">Open Rate</div><div class="stat-val">${pct(opens,sent)}%</div></div>
+    <div class="stat-card" style="--ac:var(--purple)"><div class="stat-lbl">Click Rate</div><div class="stat-val">${pct(clicks,sent)}%</div></div>
+    <div class="stat-card" style="--ac:var(--warn)"><div class="stat-lbl">Reply Rate</div><div class="stat-val">${pct(replies,sent)}%</div></div>
+  </div>
+  <div class="card"><div class="card-hdr"><span class="card-title">📈 Per-Campaign Performance</span></div>
+    <div class="tbl-wrap"><table><thead><tr><th>Campaign</th><th>Sent</th><th>Open%</th><th>Click%</th><th>Reply%</th><th>Bounces</th></tr></thead>
+    <tbody>${cs.filter(c=>c.sent>0).map(c=>`<tr><td style="font-weight:700;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(c.name)}</td><td class="mono">${fmt(c.sent)}</td>
+    <td><div class="prog-wrap"><div class="prog-fill" style="width:${pct(c.opens,c.sent)}%"></div></div> <span class="mono" style="color:var(--green-dark)">${pct(c.opens,c.sent)}%</span></td>
+    <td><div class="prog-wrap"><div class="prog-fill" style="width:${pct(c.clicks,c.sent)}%;background:var(--purple)"></div></div> <span class="mono" style="color:var(--purple)">${pct(c.clicks,c.sent)}%</span></td>
+    <td class="mono" style="color:#92400e">${pct(c.replies,c.sent)}%</td><td class="mono" style="color:var(--danger)">${Math.floor(c.sent*0.008)}</td></tr>`).join('')}</tbody></table></div>
+  </div>
+  <div class="grid2">
+    <div class="card"><div class="card-hdr"><span class="card-title">⏰ Best send times</span></div><div class="chart-rows">${tR.map(([l,p])=>`<div class="chart-row"><span class="chart-lbl">${l}</span><div class="chart-track"><div class="chart-fill" style="width:${p}%;background:${p>=80?'var(--green)':'#dcfce7'}"></div></div><span class="chart-pct" style="color:${p>=80?'var(--green-dark)':'var(--muted)'}">${p}%</span></div>`).join('')}</div></div>
+    <div class="card"><div class="card-hdr"><span class="card-title">📅 Best send days</span></div><div class="chart-rows">${dR.map(([l,p],i)=>`<div class="chart-row"><span class="chart-lbl">${l}</span><div class="chart-track"><div class="chart-fill" style="width:${p}%;background:${i===1?'var(--green)':'#dcfce7'}"></div></div><span class="chart-pct" style="color:${i===1?'var(--green-dark)':'var(--muted)'}">${p}%</span></div>`).join('')}</div></div>
+  </div>`;
+}
+
+function renderSequenceTracker(){
+  const stBg={active:'b-active',replied:'b-sent',paused:'b-paused',completed:'b-draft',bounced:'b-draft'};
+  return`<div class="card" style="padding:0;overflow:hidden">
+    <div style="padding:12px 16px;border-bottom:1px solid var(--border);background:var(--surface)"><span class="card-title">Contact × Sequence Progress (${S.contactProgress.length} tracked)</span></div>
+    <div class="tbl-wrap"><table style="min-width:640px">
+      <thead><tr><th>Contact</th><th>Campaign</th><th>Step</th><th>Progress</th><th>Status</th><th>Last Sent</th><th>Opens</th><th>Clicks</th><th>Replies</th><th></th></tr></thead>
+      <tbody>${S.contactProgress.map(r=>{
+        const c=S.contacts.find(x=>x.id===r.contactId)||{first:'?',last:'',email:''};
+        const camp=S.campaigns.find(x=>x.id===r.campaignId)||{name:'—'};
+        const pv=Math.round((r.currentStep/r.totalSteps)*100);
+        return`<tr>
+          <td><div style="font-weight:700;font-size:13px">${esc(c.first)} ${esc(c.last)}</div><div class="mono" style="font-size:10px;color:var(--muted)">${esc(c.email)}</div></td>
+          <td style="font-size:12px;max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted)">${esc(camp.name)}</td>
+          <td><span style="font-weight:700;color:var(--navy)">${r.currentStep}</span><span style="color:var(--muted)">/${r.totalSteps}</span></td>
+          <td><div style="display:flex;align-items:center;gap:5px"><div class="prog-wrap" style="width:60px"><div class="prog-fill" style="width:${pv}%;background:${r.status==='completed'?'var(--muted)':r.status==='replied'?'var(--blue)':'var(--green)'}"></div></div><span class="mono" style="font-size:10px;color:var(--muted)">${pv}%</span></div></td>
+          <td><span class="badge ${stBg[r.status]||'b-draft'}">${r.status}</span></td>
+          <td class="mono" style="font-size:11px;color:var(--muted)">${r.lastSent}</td>
+          <td class="mono" style="color:var(--green-dark)">${r.opens}</td>
+          <td class="mono" style="color:var(--purple)">${r.clicks}</td>
+          <td class="mono" style="color:var(--blue)">${r.replies}</td>
+          <td><button class="btn btn-ghost btn-sm" onclick="showContactProgress(${r.contactId})">View</button></td>
+        </tr>`;}).join('')}
+      </tbody>
+    </table></div>
+  </div>`;
+}
+
+function renderNextSchedule(){
+  const upcoming=S.contactProgress.filter(r=>r.nextSendDate&&r.status==='active').sort((a,b)=>(a.nextSendDate||'').localeCompare(b.nextSendDate||''));
+  const paused=S.contactProgress.filter(r=>r.status==='paused');
+  const done=S.contactProgress.filter(r=>r.status==='completed'||r.status==='replied');
+  return`<div class="grid3" style="margin-bottom:16px">
+    <div class="stat-card" style="--ac:var(--green)"><div class="stat-lbl">Scheduled</div><div class="stat-val">${upcoming.length}</div><div class="stat-chg">contacts awaiting next step</div></div>
+    <div class="stat-card" style="--ac:var(--warn)"><div class="stat-lbl">Paused</div><div class="stat-val">${paused.length}</div></div>
+    <div class="stat-card" style="--ac:var(--muted2)"><div class="stat-lbl">Completed / Replied</div><div class="stat-val">${done.length}</div></div>
+  </div>
+  <div class="card" style="padding:0;overflow:hidden">
+    <div style="padding:12px 16px;border-bottom:1px solid var(--border);background:var(--surface)"><span class="card-title">🗓 Upcoming Sends (${upcoming.length})</span></div>
+    ${upcoming.length===0?'<div class="empty"><div class="empty-icon">📭</div><div class="empty-txt">No scheduled sends</div></div>':''}
+    <div class="tbl-wrap"><table style="min-width:480px">
+      <thead><tr><th>Contact</th><th>Next Send</th><th>Step</th><th>Campaign</th><th>Mailbox</th><th>Subject</th></tr></thead>
+      <tbody>${upcoming.map(r=>{
+        const c=S.contacts.find(x=>x.id===r.contactId)||{first:'?',last:'',email:''};
+        const camp=S.campaigns.find(x=>x.id===r.campaignId)||{name:'—'};
+        const seq=S.sequences.find(x=>x.id===r.sequenceId);
+        const stepObj=seq&&seq.steps[r.currentStep-1];
+        const mb=S.mailboxRotation.enabled?'Rotating':((S.mailboxes.find(x=>x.active)||S.mailboxes[0])||{email:'—'}).email;
+        return`<tr>
+          <td><div style="font-weight:700;font-size:13px">${esc(c.first)} ${esc(c.last)}</div><div class="mono" style="font-size:10px;color:var(--muted)">${esc(c.email)}</div></td>
+          <td><div style="font-weight:700;font-size:12px;color:var(--green-dark)">${esc(r.nextSendDate)}</div></td>
+          <td><span class="badge b-active">Step ${r.currentStep}/${r.totalSteps}</span></td>
+          <td style="font-size:12px;color:var(--muted);max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(camp.name)}</td>
+          <td class="mono" style="font-size:10px;color:var(--muted)">${typeof mb==='string'?esc(mb):esc(mb)}</td>
+          <td style="font-size:12px;color:var(--muted);max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${stepObj?esc(stepObj.subject):'—'}</td>
+        </tr>`;}).join('')}
+      </tbody>
+    </table></div>
+  </div>`;
+}
+
+function showContactProgress(cid){
+  const r=S.contactProgress.find(x=>x.contactId===cid),c=S.contacts.find(x=>x.id===cid);if(!r||!c)return;
+  const camp=S.campaigns.find(x=>x.id===r.campaignId)||{name:'—'};
+  const seq=S.sequences.find(x=>x.id===r.sequenceId);
+  openModal(`<div class="modal-hdr"><span class="modal-title">📊 ${esc(c.first)} ${esc(c.last)}</span><button class="modal-close" onclick="closeModal()">×</button></div>
+  <div class="modal-body">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;background:var(--surface);border-radius:10px;padding:14px;margin-bottom:16px">
+      <div><div class="flbl">Contact</div><div style="font-weight:700;margin-top:3px">${esc(c.first)} ${esc(c.last)}</div><div class="mono" style="font-size:10px;color:var(--muted)">${esc(c.email)}</div></div>
+      <div><div class="flbl">Campaign</div><div style="font-weight:700;font-size:13px;margin-top:3px">${esc(camp.name)}</div></div>
+      <div><div class="flbl">Status</div><div style="margin-top:3px"><span class="badge ${r.status==='active'?'b-active':r.status==='replied'?'b-sent':'b-draft'}">${r.status}</span></div></div>
+      <div><div class="flbl">Last Sent</div><div style="font-size:13px;margin-top:3px;color:var(--muted)">${r.lastSent}</div></div>
+    </div>
+    <div class="flbl" style="margin-bottom:10px">Sequence Steps</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      ${seq?seq.steps.map((step,i)=>{
+        const done=i+1<r.currentStep,cur=i+1===r.currentStep;
+        return`<div style="display:flex;gap:10px;align-items:flex-start;padding:10px;border-radius:8px;background:${done?'#f0fdf4':cur?'#eff6ff':'var(--surface)'};border:1px solid ${done?'#bbf7d0':cur?'#bfdbfe':'var(--border)'}">
+          <div style="width:24px;height:24px;border-radius:50%;background:${done?'var(--green)':cur?'var(--blue)':'var(--border)'};display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;font-weight:800;color:${done||cur?'#fff':'var(--muted)'}">${done?'✓':i+1}</div>
+          <div style="flex:1"><div style="font-weight:700;font-size:13px;color:var(--navy)">${esc(step.subject)||'(No subject)'}</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px">${i===0?'Day 0':'Day '+step.delay} · ${done?'Sent '+r.lastSent:cur?'<strong style="color:var(--blue)">Current — Next: '+(r.nextSendDate||'TBD')+'</strong>':'Pending'}</div></div>
+          <span style="font-size:10px;font-weight:700;color:${done?'var(--green-dark)':cur?'var(--blue)':'var(--muted2)'}">${done?'SENT':cur?'NEXT':'PENDING'}</span>
+        </div>`;}).join(''):'<div style="color:var(--muted);font-size:13px">No steps found.</div>'}
+    </div>
+    ${r.nextSendDate?`<div class="success-box mt8">🗓 Next send scheduled: <strong>${r.nextSendDate}</strong></div>`:''}
+  </div>`);
+}
+
+function exportAnalyticsCSV(){const cs=S.campaigns.filter(c=>c.sent>0);downloadBlob(['Campaign,Sent,Opens,Open%,Clicks,Click%,Replies,Reply%,Bounces',...cs.map(c=>`"${c.name}",${c.sent},${c.opens},${pct(c.opens,c.sent)}%,${c.clicks},${pct(c.clicks,c.sent)}%,${c.replies},${pct(c.replies,c.sent)}%,${Math.floor(c.sent*0.008)}`)].join('\n'),`analytics_${new Date().toISOString().slice(0,10)}.csv`);toast('⬇️ Analytics exported');}
+function exportSequenceCSV(){downloadBlob(['Contact,Email,Campaign,Step,Total,Status,Last Sent,Opens,Clicks,Replies',...S.contactProgress.map(r=>{const c=S.contacts.find(x=>x.id===r.contactId)||{first:'?',last:'',email:''};const camp=S.campaigns.find(x=>x.id===r.campaignId)||{name:'?'};return `"${c.first} ${c.last}","${c.email}","${camp.name}",${r.currentStep},${r.totalSteps},${r.status},"${r.lastSent}",${r.opens},${r.clicks},${r.replies}`;})].join('\n'),`sequence_tracker_${new Date().toISOString().slice(0,10)}.csv`);toast('⬇️ Sequence tracker exported');}
+function exportScheduleCSV(){const up=S.contactProgress.filter(r=>r.nextSendDate&&r.status==='active');downloadBlob(['Contact,Email,Campaign,Step,Next Send Date',...up.map(r=>{const c=S.contacts.find(x=>x.id===r.contactId)||{first:'?',last:'',email:''};const camp=S.campaigns.find(x=>x.id===r.campaignId)||{name:'?'};return `"${c.first} ${c.last}","${c.email}","${camp.name}",${r.currentStep},"${r.nextSendDate||''}"`; })].join('\n'),`schedule_${new Date().toISOString().slice(0,10)}.csv`);toast('⬇️ Schedule exported');}
+
+function renderDNC(){
+  const {emails,domains}=S.dnc;
+  const total=emails.length+domains.length;
+  return`
+  <div class="grid3" style="margin-bottom:16px">
+    <div class="stat-card" style="--ac:var(--danger)"><div class="stat-lbl">Total Blocked</div><div class="stat-val" style="color:var(--danger)">${total}</div><div class="stat-chg">emails + domains</div></div>
+    <div class="stat-card" style="--ac:var(--warn)"><div class="stat-lbl">Blocked Emails</div><div class="stat-val">${emails.length}</div></div>
+    <div class="stat-card" style="--ac:var(--purple)"><div class="stat-lbl">Blocked Domains</div><div class="stat-val">${domains.length}</div></div>
+  </div>
+  <div class="card" style="margin-bottom:14px">
+    <div class="fbetween">
+      <div style="font-size:12px;color:var(--muted);max-width:420px">Entries here will <strong style="color:var(--navy)">never be emailed</strong>, even if they appear in a campaign.</div>
+      <div class="fgap"><button class="btn btn-ghost btn-sm" onclick="openDNCImport()">⬆️ Import CSV</button><button class="btn btn-ghost btn-sm" onclick="exportDNC()">⬇️ Export</button><button class="btn btn-danger btn-sm" onclick="openAddDNC()">+ Add Entry</button></div>
+    </div>
+  </div>
+  <div class="grid2">
+    <div class="card" style="padding:0;overflow:hidden">
+      <div style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:var(--surface)"><span class="card-title">🚫 Blocked Emails (${emails.length})</span><button class="btn btn-ghost btn-sm" onclick="openAddDNC('email')">+ Email</button></div>
+      ${emails.length===0?'<div class="empty" style="padding:24px"><div class="empty-icon" style="font-size:24px">📧</div><div class="empty-txt">No blocked emails</div></div>':''}
+      <div style="max-height:300px;overflow-y:auto">${emails.map((e,i)=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid var(--border);gap:10px"><span class="mono" style="font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--danger)">✕ ${esc(e)}</span><button class="btn btn-ghost btn-sm" style="padding:3px 7px;color:var(--danger);border-color:#fecaca;flex-shrink:0" onclick="removeDNC('email',${i})">✕</button></div>`).join('')}</div>
+    </div>
+    <div class="card" style="padding:0;overflow:hidden">
+      <div style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:var(--surface)"><span class="card-title">🌐 Blocked Domains (${domains.length})</span><button class="btn btn-ghost btn-sm" onclick="openAddDNC('domain')">+ Domain</button></div>
+      ${domains.length===0?'<div class="empty" style="padding:24px"><div class="empty-icon" style="font-size:24px">🌐</div><div class="empty-txt">No blocked domains</div></div>':''}
+      <div style="max-height:300px;overflow-y:auto">${domains.map((d,i)=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid var(--border);gap:10px"><span class="mono" style="font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--purple)">⊘ *@${esc(d)}</span><button class="btn btn-ghost btn-sm" style="padding:3px 7px;color:var(--danger);border-color:#fecaca;flex-shrink:0" onclick="removeDNC('domain',${i})">✕</button></div>`).join('')}</div>
+    </div>
+  </div>
+  <div class="card mt16"><div class="card-hdr"><span class="card-title">🔍 Check an Address</span></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap"><input class="finput" id="dnc-check-input" placeholder="email@domain.com or domain.com" style="max-width:340px" onkeydown="if(event.key==='Enter')checkDNC()"/><button class="btn btn-ghost" onclick="checkDNC()">Check</button></div>
+    <div id="dnc-check-result" style="margin-top:10px"></div>
+  </div>`;
+}
+function removeDNC(type,idx){if(type==='email')S.dnc.emails.splice(idx,1);else S.dnc.domains.splice(idx,1);showPage('dnc');toast(type==='email'?'✅ Email removed':'✅ Domain removed');}
+function checkDNC(){const val=($('dnc-check-input')||{value:''}).value.trim().toLowerCase();const res=$('dnc-check-result');if(!val||!res)return;const emailBlocked=S.dnc.emails.map(e=>e.toLowerCase()).includes(val);const domain=val.includes('@')?val.split('@')[1]:val;const domainBlocked=S.dnc.domains.map(d=>d.toLowerCase()).includes(domain);if(emailBlocked){res.innerHTML=`<div class="warn-box" style="background:#fef2f2;border-color:#fecaca;color:var(--danger)">🚫 <strong>${esc(val)}</strong> is blocked (exact email match).</div>`;}else if(domainBlocked){res.innerHTML=`<div class="warn-box" style="background:#fef2f2;border-color:#fecaca;color:var(--danger)">🚫 Blocked — domain <strong>${esc(domain)}</strong> is on the DNC list.</div>`;}else{res.innerHTML=`<div class="success-box">✅ <strong>${esc(val)}</strong> is NOT on the DNC list.</div>`;}}
+function openAddDNC(t){const type=t||'email';openModal(`<div class="modal-hdr"><span class="modal-title">➕ Add to DNC</span><button class="modal-close" onclick="closeModal()">×</button></div><div class="modal-body"><div class="fg"><label class="flbl">Type</label><select class="fselect" id="dnc-type" onchange="toggleDNCPlaceholder()"><option value="email" ${type==='email'?'selected':''}>Email address</option><option value="domain" ${type==='domain'?'selected':''}>Domain (blocks all @domain)</option></select></div><div class="fg"><label class="flbl" id="dnc-entry-lbl">Email Address</label><input class="finput" id="dnc-entry" placeholder="e.g. john@example.com"/></div><div class="fg"><label class="flbl">Or paste a list (one per line)</label><textarea class="ftextarea" id="dnc-bulk" placeholder="john@example.com&#10;jane@example.com" style="min-height:80px"></textarea></div><div class="info-box">Adding a domain blocks all addresses at that domain.</div></div><div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal()">Cancel</button><button class="btn btn-danger" onclick="saveDNCEntry()">Add to DNC List</button></div>`);}
+function toggleDNCPlaceholder(){const t=($('dnc-type')||{value:'email'}).value;const l=$('dnc-entry-lbl'),i=$('dnc-entry');if(l)l.textContent=t==='email'?'Email Address':'Domain';if(i)i.placeholder=t==='email'?'e.g. john@example.com':'e.g. competitor.com';}
+function saveDNCEntry(){const type=($('dnc-type')||{value:'email'}).value;const single=($('dnc-entry')||{value:''}).value.trim().toLowerCase();const bulk=($('dnc-bulk')||{value:''}).value.trim();const entries=[];if(single)entries.push(single);if(bulk)bulk.split(/\r?\n/).forEach(l=>{const v=l.trim().toLowerCase();if(v)entries.push(v);});if(!entries.length){toast('⚠️ Enter at least one entry');return;}let added=0,skipped=0;entries.forEach(val=>{const isEmail=val.includes('@');const list=isEmail?S.dnc.emails:S.dnc.domains;const clean=isEmail?val:val.replace(/^[@*]/,'');if(list.map(x=>x.toLowerCase()).includes(clean)){skipped++;}else{list.push(clean);added++;}});closeModal();showPage('dnc');toast(`🚫 Added ${added} entr${added!==1?'ies':'y'} to DNC${skipped?` (${skipped} skipped)`:''}`); }
+function openDNCImport(){openModal(`<div class="modal-hdr"><span class="modal-title">⬆️ Import DNC List</span><button class="modal-close" onclick="closeModal()">×</button></div><div class="modal-body"><div class="info-box" style="margin-bottom:12px">Upload CSV with <strong>email</strong> or <strong>domain</strong> column, or plain text with one entry per line.</div><div class="drop-zone" id="dnc-drop-zone" onclick="$('dnc-file-input').click()" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dncDropFile(event)"><input type="file" id="dnc-file-input" accept=".csv,.txt" onchange="handleDNCFile(this.files[0])"/><div class="drop-icon">📂</div><div class="drop-txt">Click or drag & drop</div><div class="drop-sub">CSV or TXT</div></div><div id="dnc-preview"></div><button class="btn btn-ghost btn-sm mt8" onclick="downloadDNCTemplate()">⬇️ Download Template</button></div><div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal()">Cancel</button><button class="btn btn-danger" id="dnc-import-btn" style="display:none" onclick="confirmDNCImport()">Import</button></div>`);}
+window._dncRows=[];
+function dncDropFile(e){e.preventDefault();dragLeave(e);const f=e.dataTransfer&&e.dataTransfer.files[0];if(f)handleDNCFile(f);}
+function handleDNCFile(file){if(!file)return;const r=new FileReader();r.onload=ev=>{const rows=parseDNCFile(ev.target.result);window._dncRows=rows;const preview=$('dnc-preview'),btn=$('dnc-import-btn');if(!rows.length){if(preview)preview.innerHTML='<div class="warn-box" style="margin-top:10px">No valid entries found.</div>';return;}if(btn){btn.style.display='';btn.textContent=`Import ${rows.length} Entries`;}const emails=rows.filter(r=>r.type==='email'),domains=rows.filter(r=>r.type==='domain');if(preview)preview.innerHTML=`<div class="success-box" style="margin-top:10px">Found ${emails.length} emails + ${domains.length} domains.</div>`;};r.readAsText(file);}
+function parseDNCFile(text){const lines=text.trim().split(/\r?\n/);if(!lines.length)return[];const firstLine=lines[0].toLowerCase();const isCSV=firstLine.includes(',');const entries=[];if(isCSV){const headers=lines[0].split(',').map(h=>h.trim().toLowerCase().replace(/["']/g,''));const emailCol=headers.indexOf('email'),domainCol=headers.indexOf('domain');for(let i=1;i<lines.length;i++){if(!lines[i].trim())continue;const vals=splitCSVLine(lines[i]);if(emailCol>=0&&vals[emailCol]){const v=vals[emailCol].replace(/["']/g,'').trim().toLowerCase();if(v)entries.push({value:v,type:'email'});}if(domainCol>=0&&vals[domainCol]){const v=vals[domainCol].replace(/["']/g,'').trim().toLowerCase();if(v)entries.push({value:v,type:'domain'});}if(emailCol<0&&domainCol<0&&vals[0]){const v=vals[0].replace(/["']/g,'').trim().toLowerCase();if(v)entries.push({value:v,type:v.includes('@')?'email':'domain'});}}}else{lines.forEach(l=>{const v=l.trim().toLowerCase().replace(/^[@*]/,'');if(!v)return;entries.push({value:v,type:v.includes('@')?'email':'domain'});});}return entries.filter(e=>e.value.length>0);}
+function confirmDNCImport(){const rows=window._dncRows||[];if(!rows.length)return;let added=0,skipped=0;rows.forEach(({value,type})=>{const list=type==='email'?S.dnc.emails:S.dnc.domains;if(list.map(x=>x.toLowerCase()).includes(value)){skipped++;}else{list.push(value);added++;}});closeModal();showPage('dnc');toast(`🚫 Added ${added} entries${skipped?` (${skipped} skipped)`:''}`);}
+function downloadDNCTemplate(){downloadBlob('email,domain\nnoreply@example.com,competitor.com\nunsubscribed@co.com,spamtrap.io','dnc_template.csv');toast('⬇️ Template downloaded');}
+function exportDNC(){if(!S.dnc.emails.length&&!S.dnc.domains.length){toast('⚠️ DNC list is empty');return;}const rows=['email,domain',...S.dnc.emails.map(e=>`"${e}",""`), ...S.dnc.domains.map(d=>`"","${d}"`)];downloadBlob(rows.join('\n'),`dnc_${new Date().toISOString().slice(0,10)}.csv`);toast(`⬇️ Exported ${S.dnc.emails.length+S.dnc.domains.length} DNC entries`);}
+
+// ═══════════════════════════════════════
+// INTEGRATIONS
+// ═══════════════════════════════════════
+function renderIntegrations(){
+  const {googleSheets:gs,zapier:zap,ghl}=S.integrations;
+  const u=A.user;
+  const planHasAPI=u&&(u.plan==='growth'||u.plan==='agency');
+  const planHasWebhook=u&&u.plan==='agency';
+  const connBadge=(on)=>on?`<span class="badge b-active">● Connected</span>`:`<span class="badge b-draft">○ Not connected</span>`;
+  return`
+  <div class="info-box" style="margin-bottom:16px;font-size:12px">🔌 Connect Inboxmail to your tools. Sync contacts, trigger automations, and push replies to your CRM in real time.</div>
+  <!-- GOOGLE SHEETS -->
+  <div class="int-card">
+    <div class="int-card-hdr">
+      <div style="display:flex;align-items:center;gap:12px"><div class="int-logo" style="background:#e8f5e9;border:1px solid #c8e6c9">📊</div>
+        <div><div style="font-weight:800;font-size:15px;color:var(--navy)">Google Sheets</div><div style="font-size:12px;color:var(--muted);margin-top:2px">Sync contacts & campaign stats to a spreadsheet</div></div>
+      </div>
+      <div class="fgap">${connBadge(gs.connected)}<button class="btn ${gs.connected?'btn-ghost':'btn-primary'} btn-sm" onclick="openGSConfig()">${gs.connected?'⚙️ Edit':'Connect'}</button></div>
+    </div>
+    ${gs.connected?`<div class="int-card-body"><div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 14px;flex:1;min-width:130px"><div class="stat-lbl">Sheet ID</div><div class="mono" style="font-size:11px;margin-top:4px">${esc(gs.sheetId)||'—'}</div></div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 14px;flex:1;min-width:100px"><div class="stat-lbl">Tab</div><div style="font-size:13px;font-weight:700;margin-top:4px">${esc(gs.sheetName)}</div></div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 14px;flex:1;min-width:120px"><div class="stat-lbl">Sync</div><div style="font-size:13px;font-weight:700;margin-top:4px">${gs.syncDirection==='both'?'↕ Both':gs.syncDirection==='push'?'↑ Push':'↓ Pull'}</div></div>
+    </div><div class="fgap"><button class="btn btn-primary btn-sm" onclick="triggerGSSync('push')">⬆️ Push Contacts</button><button class="btn btn-ghost btn-sm" onclick="triggerGSSync('pull')">⬇️ Pull from Sheet</button><button class="btn btn-ghost btn-sm" onclick="openGSConfig()">⚙️ Edit</button><button class="btn btn-danger btn-sm" onclick="disconnectInt('googleSheets')">Disconnect</button></div></div>`:''}
+  </div>
+  <!-- ZAPIER -->
+  <div class="int-card">
+    <div class="int-card-hdr">
+      <div style="display:flex;align-items:center;gap:12px"><div class="int-logo" style="background:#fff3e0;border:1px solid #ffe0b2">⚡</div>
+        <div><div style="font-weight:800;font-size:15px;color:var(--navy)">Zapier</div><div style="font-size:12px;color:var(--muted);margin-top:2px">Trigger Zaps on Inboxmail events via webhook</div></div>
+      </div>
+      <div class="fgap">${connBadge(zap.connected)}<button class="btn ${zap.connected?'btn-ghost':'btn-primary'} btn-sm" onclick="openZapierConfig()">${zap.connected?'⚙️ Edit':'Connect'}</button></div>
+    </div>
+    ${zap.connected?`<div class="int-card-body">
+      <div style="margin-bottom:12px"><div class="flbl" style="margin-bottom:6px">Webhook URL</div>
+        <div style="display:flex;gap:8px;align-items:center"><div class="mono" style="font-size:11px;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:8px 12px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(zap.webhookUrl)}</div><button class="btn btn-ghost btn-sm" onclick="copyText('${esc(zap.webhookUrl)}')">Copy</button></div>
+      </div>
+      <div class="trigger-card-grid" style="margin-bottom:12px">
+        ${[['newReply','💬 New Reply'],['newContact','👤 New Contact'],['campaignComplete','✅ Campaign Done'],['unsubscribe','🚫 Unsubscribe']].map(([k,l])=>`<div class="trigger-card ${zap.triggers[k]?'on':''}" onclick="toggleZapTrig('${k}')"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:12px;font-weight:700;color:var(--navy)">${l}</span><span style="font-size:10px;font-family:'DM Mono',monospace;color:${zap.triggers[k]?'var(--green-dark)':'var(--muted)'}">${zap.triggers[k]?'ON':'OFF'}</span></div></div>`).join('')}
+      </div>
+      <div class="fgap"><button class="btn btn-primary btn-sm" onclick="toast('🧪 Test payload sent!')">🧪 Test</button><button class="btn btn-ghost btn-sm" onclick="openZapierConfig()">⚙️ Edit</button><button class="btn btn-danger btn-sm" onclick="disconnectInt('zapier')">Disconnect</button></div>
+    </div>`:''}
+  </div>
+  <!-- GOHIGHLEVEL -->
+  <div class="int-card">
+    <div class="int-card-hdr">
+      <div style="display:flex;align-items:center;gap:12px"><div class="int-logo" style="background:#f3e8ff;border:1px solid #e9d5ff">🚀</div>
+        <div><div style="font-weight:800;font-size:15px;color:var(--navy)">GoHighLevel</div><div style="font-size:12px;color:var(--muted);margin-top:2px">Sync contacts, tag replies, push to CRM pipelines</div></div>
+      </div>
+      <div class="fgap">${connBadge(ghl.connected)}${!planHasAPI?`<span style="font-size:11px;color:var(--muted);background:var(--surface2);padding:4px 8px;border-radius:6px;border:1px solid var(--border)">Growth+ only</span>`:`<button class="btn ${ghl.connected?'btn-ghost':'btn-primary'} btn-sm" onclick="openGHLConfig()">${ghl.connected?'⚙️ Edit':'Connect'}</button>`}</div>
+    </div>
+    ${!planHasAPI?`<div class="int-card-body"><div class="info-box">GoHighLevel integration requires the <strong>Growth</strong> or <strong>Agency</strong> plan. <a href="#" onclick="showPage('pricing')">Upgrade now →</a></div></div>`:''}
+    ${ghl.connected&&planHasAPI?`<div class="int-card-body">
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 14px;flex:1;min-width:120px"><div class="stat-lbl">Location ID</div><div class="mono" style="font-size:11px;margin-top:4px">${esc(ghl.locationId)||'—'}</div></div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 14px;flex:1;min-width:100px"><div class="stat-lbl">Pipeline</div><div style="font-size:13px;font-weight:700;margin-top:4px">${esc(ghl.pipeline)||'Default'}</div></div>
+      </div>
+      <div class="trigger-card-grid" style="margin-bottom:12px">
+        ${[['syncContacts','👥 Sync Contacts'],['syncReplies','💬 Sync Replies'],['tagReplies','🏷 Tag Replied'],['tagUnsubscribes','🚫 Tag Unsubs']].map(([k,l])=>`<div class="trigger-card ${ghl[k]?'on':''}" onclick="toggleGHLOpt('${k}')"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:12px;font-weight:700;color:var(--navy)">${l}</span><span style="font-size:10px;font-family:'DM Mono',monospace;color:${ghl[k]?'var(--green-dark)':'var(--muted)'}">${ghl[k]?'ON':'OFF'}</span></div></div>`).join('')}
+      </div>
+      <div class="fgap"><button class="btn btn-primary btn-sm" onclick="syncToGHL()">⬆️ Sync Now</button><button class="btn btn-ghost btn-sm" onclick="openGHLConfig()">⚙️ Edit</button><button class="btn btn-danger btn-sm" onclick="disconnectInt('ghl')">Disconnect</button></div>
+    </div>`:''}
+  </div>
+  <!-- API -->
+  <div class="card mt16">
+    <div class="card-hdr"><span class="card-title">🔑 Inboxmail API & Webhooks</span>${!planHasAPI?`<span style="font-size:11px;color:var(--muted);background:var(--surface2);padding:4px 8px;border-radius:6px;border:1px solid var(--border)">Growth+ only</span>`:''}</div>
+    ${!planHasAPI?`<div class="info-box">API access requires the <strong>Growth</strong> or <strong>Agency</strong> plan. <a href="#" onclick="showPage('pricing')">Upgrade →</a></div>`:`
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div><div class="flbl" style="margin-bottom:5px">Inbound Webhook URL</div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><div class="mono" style="font-size:11px;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:8px 12px;flex:1;min-width:200px">https://api.inboxmail.io/webhook/inbound/im_${u?u.id:'abc'}123xyz</div><button class="btn btn-ghost btn-sm" onclick="toast('📋 Copied!')">Copy</button></div>
+      </div>
+      <div><div class="flbl" style="margin-bottom:5px">REST API Key</div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><div class="mono" style="font-size:11px;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:8px 12px;flex:1;min-width:200px;letter-spacing:2px">im_••••••••••••••••••••</div><button class="btn btn-ghost btn-sm" onclick="toast('🔑 Key revealed (demo)')">Reveal</button><button class="btn btn-ghost btn-sm" onclick="toast('🔄 New key generated')">Regenerate</button></div>
+      </div>
+    </div>
+    <div class="warn-box mt8">⚠️ Never expose API keys in client-side code. Proxy all API calls through your backend server.</div>`}
+  </div>`;
+}
+
+function disconnectInt(k){S.integrations[k].connected=false;showPage('integrations');toast('🔌 Integration disconnected');}
+function toggleZapTrig(k){S.integrations.zapier.triggers[k]=!S.integrations.zapier.triggers[k];showPage('integrations');}
+function toggleGHLOpt(k){S.integrations.ghl[k]=!S.integrations.ghl[k];showPage('integrations');}
+function copyText(t){navigator.clipboard&&navigator.clipboard.writeText(t).then(()=>toast('📋 Copied!')).catch(()=>toast('📋 '+t));}
+function triggerGSSync(dir){toast(dir==='push'?'⬆️ Pushing contacts to Sheets...':'⬇️ Pulling from Sheets...');setTimeout(()=>toast(dir==='push'?'✅ Contacts synced to Sheets!':'✅ Sheet data pulled!'),1800);}
+function syncToGHL(){toast(`⬆️ Syncing ${S.contacts.length} contacts to GoHighLevel...`);setTimeout(()=>toast('✅ Synced to GoHighLevel CRM!'),2000);}
+
+function openGSConfig(){const gs=S.integrations.googleSheets;openModal(`<div class="modal-hdr"><span class="modal-title">📊 Google Sheets Config</span><button class="modal-close" onclick="closeModal()">×</button></div><div class="modal-body"><div class="info-box" style="margin-bottom:12px">Requires a Google Service Account API key. <a href="https://console.cloud.google.com/apis/library/sheets.googleapis.com" target="_blank">Enable Sheets API →</a></div><div class="fg"><label class="flbl">Service Account JSON / API Key</label><textarea class="ftextarea" id="gs-apikey" style="min-height:60px;font-size:11px" placeholder='{"type":"service_account",...}'>${esc(gs.apiKey)}</textarea></div><div class="fg"><label class="flbl">Spreadsheet ID</label><input class="finput" id="gs-sheet-id" value="${esc(gs.sheetId)}" placeholder="1BxiMVs0XRA5nFMd..."/><span style="font-size:10px;color:var(--muted)">Found in your Sheet URL: docs.google.com/spreadsheets/d/<strong>ID</strong>/edit</span></div><div class="grid2" style="gap:10px"><div class="fg"><label class="flbl">Sheet Tab</label><input class="finput" id="gs-sheet-name" value="${esc(gs.sheetName)}" placeholder="Contacts"/></div><div class="fg"><label class="flbl">Sync Direction</label><select class="fselect" id="gs-direction"><option value="both" ${gs.syncDirection==='both'?'selected':''}>↕ Bidirectional</option><option value="push" ${gs.syncDirection==='push'?'selected':''}>↑ Push only</option><option value="pull" ${gs.syncDirection==='pull'?'selected':''}>↓ Pull only</option></select></div></div><div class="toggle-row"><div><div class="t-label">Auto Sync (hourly)</div></div><button class="toggle ${gs.autoSync?'on':''}" id="gs-autosync" onclick="this.classList.toggle('on')"></button></div><div class="warn-box mt8">⚠️ In production, proxy Sheets API calls through your backend.</div></div><div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal()">Cancel</button><button class="btn btn-primary" onclick="saveGSConfig()">Save & Connect</button></div>`);}
+function saveGSConfig(){const sheetId=($('gs-sheet-id')||{value:''}).value.trim();if(!sheetId){toast('⚠️ Enter a Spreadsheet ID');return;}const gs=S.integrations.googleSheets;gs.apiKey=($('gs-apikey')||{value:''}).value.trim();gs.sheetId=sheetId;gs.sheetName=($('gs-sheet-name')||{value:'Contacts'}).value.trim()||'Contacts';gs.syncDirection=($('gs-direction')||{value:'both'}).value;gs.autoSync=($('gs-autosync')||{className:''}).className.includes('on');gs.connected=true;closeModal();showPage('integrations');toast('✅ Google Sheets connected!');}
+function openZapierConfig(){const zap=S.integrations.zapier;openModal(`<div class="modal-hdr"><span class="modal-title">⚡ Zapier Config</span><button class="modal-close" onclick="closeModal()">×</button></div><div class="modal-body"><div class="info-box" style="margin-bottom:12px">Create a Zap using <strong>Webhooks by Zapier → Catch Hook</strong>. Paste the URL below. <a href="https://zapier.com/apps/webhook/integrations" target="_blank">Open Zapier →</a></div><div class="fg"><label class="flbl">Zapier Catch Hook URL</label><input class="finput" id="zap-webhook" value="${esc(zap.webhookUrl)}" placeholder="https://hooks.zapier.com/hooks/catch/..."/></div><div class="flbl" style="margin-bottom:8px">Fire webhook when:</div>${[['newReply','💬 New Reply','Prospect replies to an email'],['newContact','👤 New Contact','Contact added to Inboxmail'],['campaignComplete','✅ Campaign Complete','All campaign steps finish'],['unsubscribe','🚫 Unsubscribe','Someone unsubscribes']].map(([k,l,d])=>`<div class="toggle-row"><div><div class="t-label">${l}</div><div class="t-desc">${d}</div></div><button class="toggle ${zap.triggers[k]?'on':''}" id="zt-${k}" onclick="this.classList.toggle('on')"></button></div>`).join('')}</div><div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal()">Cancel</button><button class="btn btn-primary" onclick="saveZapierConfig()">Save & Connect</button></div>`);}
+function saveZapierConfig(){const url=($('zap-webhook')||{value:''}).value.trim();if(!url||!url.startsWith('http')){toast('⚠️ Enter a valid webhook URL');return;}const zap=S.integrations.zapier;zap.webhookUrl=url;['newReply','newContact','campaignComplete','unsubscribe'].forEach(k=>{const el=$(`zt-${k}`);if(el)zap.triggers[k]=el.className.includes('on');});zap.connected=true;closeModal();showPage('integrations');toast('✅ Zapier connected!');}
+function openGHLConfig(){const ghl=S.integrations.ghl;openModal(`<div class="modal-hdr"><span class="modal-title">🚀 GoHighLevel Config</span><button class="modal-close" onclick="closeModal()">×</button></div><div class="modal-body"><div class="info-box" style="margin-bottom:12px">Get your API key from <strong>GHL → Settings → API Keys</strong>. <a href="https://app.gohighlevel.com/settings/api_keys" target="_blank">Open GHL →</a></div><div class="fg"><label class="flbl">GHL API Key</label><input class="finput" id="ghl-apikey" type="password" value="${esc(ghl.apiKey)}" placeholder="eyJhbGci..."/></div><div class="grid2" style="gap:10px"><div class="fg"><label class="flbl">Location ID</label><input class="finput" id="ghl-location" value="${esc(ghl.locationId)}" placeholder="ve9EPM428h8vShlRW1KT"/></div><div class="fg"><label class="flbl">Pipeline</label><input class="finput" id="ghl-pipeline" value="${esc(ghl.pipeline)}" placeholder="Sales Pipeline"/></div></div>${[['syncContacts','👥 Sync Contacts','Push contacts to GHL CRM'],['syncReplies','💬 Sync Replies','Create GHL conversations from replies'],['tagReplies','🏷 Tag Replied','Add "qm-replied" tag in GHL'],['tagUnsubscribes','🚫 Tag Unsubs','Add "qm-unsubscribed" tag in GHL']].map(([k,l,d])=>`<div class="toggle-row"><div><div class="t-label">${l}</div><div class="t-desc">${d}</div></div><button class="toggle ${ghl[k]?'on':''}" id="ghl-${k}" onclick="this.classList.toggle('on')"></button></div>`).join('')}<div class="warn-box mt8">⚠️ Proxy GHL API calls through your backend in production.</div></div><div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal()">Cancel</button><button class="btn btn-primary" onclick="saveGHLConfig()">Save & Connect</button></div>`);}
+function saveGHLConfig(){const apiKey=($('ghl-apikey')||{value:''}).value.trim(),locationId=($('ghl-location')||{value:''}).value.trim();if(!apiKey||!locationId){toast('⚠️ API Key and Location ID required');return;}const ghl=S.integrations.ghl;ghl.apiKey=apiKey;ghl.locationId=locationId;ghl.pipeline=($('ghl-pipeline')||{value:''}).value.trim();['syncContacts','syncReplies','tagReplies','tagUnsubscribes'].forEach(k=>{const el=$(`ghl-${k}`);if(el)ghl[k]=el.className.includes('on');});ghl.connected=true;closeModal();showPage('integrations');toast('✅ GoHighLevel connected!');}
+
+// ═══════════════════════════════════════
+// PRICING PAGE
+// ═══════════════════════════════════════
+function renderPricing(){
+  const ann=S.pricingAnnual;
+  const cur=A.user?A.user.plan:'none';
+  const planFeatures={
+    starter:['1 Email Sender','1 LinkedIn Account','1 Workspace','1 User','1,000 Contacts','3,000 Emails Sent/mo','Zapier Integration','Expert Support','14-Day Free Trial'],
+    growth:['Unlimited Email Senders','Unlimited LinkedIn Accounts','1 Workspace','Unlimited Users','30,000 Contacts','100,000 Emails Sent/mo','Zapier Integration','API Access','Priority Expert Support','14-Day Free Trial'],
+    agency:['Unlimited Email Senders','Unlimited LinkedIn Accounts','2 Workspaces (+₹2,999/extra)','Unlimited Users','50,000 Contacts (+₹999/10k)','300,000 Emails Sent/mo','Zapier Integration','API Access','Webhook Support','Priority Expert Support'],
+  };
+  const prices={starter:{mo:500,yr:425},growth:{mo:5999,yr:5099},agency:{mo:20000,yr:17000}};
+
+  const mkCard=(key,popular)=>{
+    const p=prices[key];const feats=planFeatures[key];const isCurrent=cur===key;
+    return`<div class="price-card ${popular?'popular':''}">
+      ${popular?'<div class="popular-badge">⭐ Most Popular</div>':''}
+      <div class="plan-name">${PLANS[key].name}</div>
+      <div class="plan-tagline">${key==='starter'?'The no-brainer plan for anyone starting cold outreach.':key==='growth'?'The best plan to grow your business alone or with a team.':'The perfect plan for agencies willing to grow without breaking the bank.'}</div>
+      <div class="plan-price"><sup>₹</sup>${fmt(ann?p.yr:p.mo)}<sub>/mo</sub></div>
+      <div class="plan-price-annual">${ann?`Billed annually (₹${fmt(p.yr*12)}/yr)`:' '}</div>
+      <button class="plan-cta ${popular?'plan-cta-primary':'plan-cta-outline'}" onclick="selectPlan('${key}')">${isCurrent?'✓ Current Plan':key==='agency'?'Start Free Trial →':'Start Free Trial →'}</button>
+      <div class="plan-divider"></div>
+      <div class="plan-features">
+        ${feats.map((f,i)=>{
+          const isExtra=f.includes('+₹')||f.includes('/10k');
+          return`<div class="plan-feat"><span class="plan-feat-check">✓</span><span>${isExtra?f.split('(')[0].trim():f}</span></div>${isExtra?`<div class="plan-feat-extra">${f.match(/\(([^)]+)\)/)?.[1]||''}</div>`:''}`
+        }).join('')}
+      </div>
+    </div>`;
+  };
+
+  return`
+  <div class="pricing-hero">
+    <h1>Simple, transparent <span>pricing</span></h1>
+    <p>One flat price. No per-seat fees. No hidden costs. Scale your cold outreach without scaling your bill.</p>
+    <div class="pricing-toggle">
+      <span class="${!ann?'active-lbl':''}">Monthly</span>
+      <button class="tog-wrap ${ann?'yearly':''}" onclick="togglePricingAnnual()"></button>
+      <span class="${ann?'active-lbl':''}">Annual <span class="annual-badge">Save 15%</span></span>
+    </div>
+  </div>
+
+  <div class="pricing-grid">
+    ${mkCard('starter',false)}
+    ${mkCard('growth',true)}
+    ${mkCard('agency',false)}
+  </div>
+
+  <div class="pricing-compare">
+    <h2>Compare plans</h2>
+    <div style="overflow-x:auto">
+    <table class="compare-table" style="min-width:520px">
+      <thead><tr><th style="text-align:left">Feature</th><th>Starter</th><th>Growth</th><th>Agency</th></tr></thead>
+      <tbody>
+        <tr><td>Price (monthly)</td><td>₹500</td><td>₹5,999</td><td>₹20,000</td></tr>
+        <tr><td>Email Senders</td><td>1</td><td>Unlimited</td><td>Unlimited</td></tr>
+        <tr><td>LinkedIn Accounts</td><td>1</td><td>Unlimited</td><td>Unlimited</td></tr>
+        <tr><td>Workspaces</td><td>1</td><td>1</td><td>2 (+₹2,999/extra)</td></tr>
+        <tr><td>Users</td><td>1</td><td>Unlimited</td><td>Unlimited</td></tr>
+        <tr><td>Contacts</td><td>1,000</td><td>30,000</td><td>50,000</td></tr>
+        <tr><td>Emails Sent/mo</td><td>3,000</td><td>100,000</td><td>300,000</td></tr>
+        <tr><td>Zapier</td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td></tr>
+        <tr><td>API Access</td><td><span class="check-no">—</span></td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td></tr>
+        <tr><td>Webhooks</td><td><span class="check-no">—</span></td><td><span class="check-no">—</span></td><td><span class="check-yes">✓</span></td></tr>
+        <tr><td>GoHighLevel Integration</td><td><span class="check-no">—</span></td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td></tr>
+        <tr><td>Google Sheets Sync</td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td></tr>
+        <tr><td>Support</td><td>Expert</td><td>Priority</td><td>Priority</td></tr>
+        <tr><td>Free Trial</td><td><span class="check-yes">14 days</span></td><td><span class="check-yes">14 days</span></td><td><span class="check-no">—</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="pricing-faq">
+    <h2>Frequently asked questions</h2>
+    ${[
+      ['Can I switch plans anytime?','Yes. You can upgrade or downgrade at any time. When upgrading, you\'ll be prorated for the remainder of the billing cycle. When downgrading, the new rate takes effect at the next billing date.'],
+      ['What counts as a "contact"?','Any person with an email address stored in your Inboxmail workspace counts as a contact, whether or not they\'ve been emailed.'],
+      ['What happens if I exceed my email sending limit?','Sending will pause automatically. You\'ll receive a notification and can upgrade your plan or wait until the next billing cycle resets.'],
+      ['Do I need a credit card to start a free trial?','No. You can start your 14-day free trial with just an email address. No credit card required until you decide to continue.'],
+      ['Can agencies manage multiple client accounts?','Yes — the Agency plan supports multiple workspaces. Each workspace has its own contacts, campaigns, and settings. Additional workspaces are ₹2,999/mo each.'],
+      ['Is there a limit on team members?','Growth and Agency plans have unlimited users at no extra cost. Starter is limited to 1 user.'],
+    ].map(([q,a])=>`<div class="faq-item"><div class="faq-q" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'">${q} <span>↓</span></div><div class="faq-a" style="display:none">${a}</div></div>`).join('')}
+  </div>`;
+}
+
+function togglePricingAnnual(){S.pricingAnnual=!S.pricingAnnual;showPage('pricing');}
+function selectPlan(plan){
+  const u=A.user;
+  if(!u){showPage('pricing');toast('Please sign in to change your plan');return;}
+  if(u.plan===plan){toast('✓ You\'re already on the '+PLANS[plan].name+' plan');return;}
+  const old=u.plan;u.plan=plan;
+  $('user-plan-display').textContent=PLANS[plan].name+' Plan';
+  toast(`✅ Switched to ${PLANS[plan].name} Plan!`);
+  showPage('pricing');
+}
+
+// ═══════════════════════════════════════
+// SETTINGS
+// ═══════════════════════════════════════
+function renderSettings(){
+  const u=A.user;const s=S.smtp;const t=S.toggles;
+  const ti=(k,l,d)=>`<div class="toggle-row"><div><div class="t-label">${l}</div><div class="t-desc">${d}</div></div><button class="toggle ${t[k]?'on':''}" onclick="toggleSetting('${k}')"></button></div>`;
+  return`<div class="grid2">
+    <div>
+      <div class="card"><div class="card-hdr"><span class="card-title">👤 Profile</span></div>
+        <div class="grid2" style="gap:10px">
+          <div class="fg"><label class="flbl">First Name</label><input class="finput" value="${esc(u?u.first:'')}" id="set-first"/></div>
+          <div class="fg"><label class="flbl">Last Name</label><input class="finput" value="${esc(u?u.last:'')}" id="set-last"/></div>
+        </div>
+        <div class="fg"><label class="flbl">Email</label><input class="finput" value="${esc(u?u.email:'')}" id="set-email" type="email"/></div>
+        <div class="fg"><label class="flbl">Company</label><input class="finput" value="${esc(u?u.company:'')}" id="set-company"/></div>
+        <button class="btn btn-primary btn-sm" onclick="saveProfile()">Save Profile</button>
+      </div>
+      <div class="card mt16"><div class="card-hdr"><span class="card-title">📡 Email Provider</span></div>
+        <div style="margin-bottom:12px"><div style="font-weight:700;color:var(--navy)">${esc(s.provider)}</div><div class="mono" style="font-size:10px;color:var(--muted);margin-top:3px">${esc(s.fromEmail)||'Not configured'}</div><div style="display:flex;align-items:center;gap:6px;margin-top:6px;font-size:11px;color:var(--muted)"><div class="dot ${s.connected?'on':''}"></div>${s.connected?'Connected':'Not connected'}</div></div>
+        <button class="btn btn-ghost btn-full" onclick="openSmtp()">⚙️ Configure SMTP / API</button>
+      </div>
+      <div class="card mt16"><div class="card-hdr"><span class="card-title">📨 Sending Defaults</span></div>
+        <div class="fg"><label class="flbl">Daily Send Limit</label><input class="finput" type="number" value="100"/></div>
+        <div class="fg"><label class="flbl">Send Window</label><select class="fselect"><option>Weekdays 9am–5pm</option><option>Weekdays 8am–6pm</option><option>All days</option></select></div>
+        <div class="fg"><label class="flbl">Timezone</label><select class="fselect"><option>Recipient timezone (auto)</option><option>UTC</option><option>US/Eastern</option><option>US/Pacific</option></select></div>
+      </div>
+    </div>
+    <div>
+      <div class="card"><div class="card-hdr"><span class="card-title">🔧 Features</span></div>
+        ${ti('openTracking','Open Tracking','Track when recipients open emails')}
+        ${ti('clickTracking','Click Tracking','Track link clicks')}
+        ${ti('unsubLink','Auto Unsubscribe Link','CAN-SPAM / GDPR compliance')}
+        ${ti('autoFollowup','Auto-pause on reply','Stop sequence when prospect replies')}
+        ${ti('spintax','Spintax support','Use {word1|word2} randomization')}
+        ${ti('bounceHandle','Bounce handling','Auto-remove bounced addresses')}
+      </div>
+      <div class="card mt16"><div class="card-hdr"><span class="card-title">🔐 Security</span></div>
+        <div class="fg"><label class="flbl">Current Password</label><input class="finput" type="password" placeholder="••••••••"/></div>
+        <div class="fg"><label class="flbl">New Password</label><input class="finput" type="password" placeholder="Min 8 characters"/></div>
+        <div class="fg"><label class="flbl">Confirm New Password</label><input class="finput" type="password" placeholder="Repeat new password"/></div>
+        <button class="btn btn-ghost btn-sm" onclick="toast('✅ Password updated')">Update Password</button>
+      </div>
+      <div class="card mt16"><div class="card-hdr"><span class="card-title">💎 Current Plan</span></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px;background:var(--green-light);border:1px solid #bbf7d0;border-radius:var(--radius);margin-bottom:12px">
+          <div><div style="font-weight:800;color:var(--green-dark)">${PLANS[u?u.plan:'growth']?.name||'Growth'} Plan</div><div style="font-size:11px;color:var(--green-dark);margin-top:2px">₹${fmt(PLANS[u?u.plan:'growth']?.price||5999)}/mo</div></div>
+          <span class="badge b-active">Active</span>
+        </div>
+        <button class="btn btn-primary btn-full" onclick="showPage('pricing')">💎 Manage Plan</button>
+        <button class="btn btn-danger btn-full mt8" onclick="toast('⚠️ Contact support to cancel your account')">Cancel Account</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function saveProfile(){
+  if(!A.user)return;
+  const first=($('set-first')||{value:A.user.first}).value.trim()||A.user.first;
+  const last=($('set-last')||{value:A.user.last}).value.trim()||A.user.last;
+  A.user.first=first;A.user.last=last;
+  A.user.email=($('set-email')||{value:A.user.email}).value.trim()||A.user.email;
+  A.user.company=($('set-company')||{value:A.user.company}).value.trim()||A.user.company;
+  $('user-avatar').textContent=first[0].toUpperCase();
+  $('user-name-display').textContent=first+' '+last;
+  toast('✅ Profile saved');
+}
+function toggleSetting(k){S.toggles[k]=!S.toggles[k];showPage('settings');}
+function openSmtp(){const s=S.smtp;openModal(`<div class="modal-hdr"><span class="modal-title">⚙️ SMTP Config</span><button class="modal-close" onclick="closeModal()">×</button></div><div class="modal-body"><div class="fg"><label class="flbl">Provider</label><select class="fselect" id="smtp-provider" onchange="renderSmtpF()">${['Custom SMTP','SendGrid','Mailgun','Postmark','Amazon SES'].map(p=>`<option ${s.provider===p?'selected':''}>${p}</option>`).join('')}</select></div><div id="smtp-fields">${smtpFields()}</div><div class="grid2" style="gap:10px"><div class="fg"><label class="flbl">From Name</label><input class="finput" id="smtp-fname" value="${esc(s.fromName)}" placeholder="Your Name"/></div><div class="fg"><label class="flbl">From Email</label><input class="finput" id="smtp-femail" value="${esc(s.fromEmail)}" placeholder="you@domain.com"/></div></div><div class="warn-box">⚠️ Store credentials server-side in production.</div></div><div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal()">Cancel</button><button class="btn btn-primary" onclick="saveSmtp()">Save & Connect</button></div>`);}
+function smtpFields(){const p=($('smtp-provider')||{value:S.smtp.provider}).value,s=S.smtp;if(p==='Custom SMTP')return`<div class="grid2" style="gap:10px"><div class="fg"><label class="flbl">Host</label><input class="finput" id="smtp-host" value="${esc(s.host)}" placeholder="smtp.gmail.com"/></div><div class="fg"><label class="flbl">Port</label><input class="finput" id="smtp-port" value="${esc(s.port)}" placeholder="587"/></div></div><div class="fg"><label class="flbl">Username</label><input class="finput" id="smtp-user" value="${esc(s.user)}" placeholder="you@gmail.com"/></div><div class="fg"><label class="flbl">Password</label><input class="finput" type="password" id="smtp-pass" value="${esc(s.pass)}"/></div>`;return`<div class="fg"><label class="flbl">API Key</label><input class="finput" type="password" id="smtp-apikey" value="${esc(s.apiKey)}" placeholder="Enter API key..."/></div>`;}
+function renderSmtpF(){$('smtp-fields').innerHTML=smtpFields();}
+function saveSmtp(){S.smtp.provider=($('smtp-provider')||{value:S.smtp.provider}).value;S.smtp.fromName=($('smtp-fname')||{value:''}).value;S.smtp.fromEmail=($('smtp-femail')||{value:''}).value;S.smtp.host=($('smtp-host')||{value:''}).value;S.smtp.port=($('smtp-port')||{value:'587'}).value;S.smtp.user=($('smtp-user')||{value:''}).value;S.smtp.pass=($('smtp-pass')||{value:''}).value;S.smtp.apiKey=($('smtp-apikey')||{value:''}).value;S.smtp.connected=true;closeModal();showPage('settings');toast('✅ SMTP configured');}
+
+// ═══════════════════════════════════════
+// COMPOSE
+// ═══════════════════════════════════════
+
+// ── MAILBOXES ──
+function renderMailboxes(){
+  const mbs=S.mailboxes;
+  const rot=S.mailboxRotation;
+  return`
+  <!-- Stats -->
+  <div class="grid3" style="margin-bottom:16px">
+    <div class="stat-card" style="--ac:var(--green)"><div class="stat-lbl">Connected Mailboxes</div><div class="stat-val">${mbs.filter(m=>m.connected).length}</div></div>
+    <div class="stat-card" style="--ac:var(--blue)"><div class="stat-lbl">Emails Sent Today</div><div class="stat-val">${mbs.reduce((a,m)=>a+m.sent,0)}</div></div>
+    <div class="stat-card" style="--ac:${rot.enabled?'var(--green)':'var(--muted2)'}"><div class="stat-lbl">Mailbox Rotation</div><div class="stat-val" style="font-size:18px">${rot.enabled?'ON':'OFF'}</div></div>
+  </div>
+
+  <!-- Rotation settings -->
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-hdr"><span class="card-title">🔄 Mailbox Rotation</span>
+      <button class="toggle ${rot.enabled?'on':''}" onclick="S.mailboxRotation.enabled=!S.mailboxRotation.enabled;showPage('mailboxes')"></button>
+    </div>
+    ${rot.enabled?`<div style="display:flex;flex-direction:column;gap:10px">
+      <div class="fg" style="margin-bottom:0"><label class="flbl">Rotation Mode</label>
+        <select class="fselect" style="max-width:260px" onchange="S.mailboxRotation.mode=this.value;showPage('mailboxes')">
+          <option value="round-robin" ${rot.mode==='round-robin'?'selected':''}>Round Robin — even distribution</option>
+          <option value="weighted" ${rot.mode==='weighted'?'selected':''}>Weighted — by daily limit</option>
+          <option value="random" ${rot.mode==='random'?'selected':''}>Random</option>
+        </select>
+      </div>
+      <div class="info-box">Emails will rotate across all <strong>active connected</strong> mailboxes using <strong>${rot.mode}</strong> mode. Each mailbox still respects its own daily send limit.</div>
+    </div>`:`<div style="font-size:13px;color:var(--muted)">Enable rotation to send emails from multiple mailboxes automatically. Great for deliverability and high-volume sending.</div>`}
+  </div>
+
+  <!-- Custom Domain & Unsubscribe -->
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-hdr"><span class="card-title">🌐 Custom Sending Domain & Unsubscribe</span><button class="btn btn-ghost btn-sm" onclick="openDomainSettings()">Manage Domains</button></div>
+    <div class="grid2" style="gap:12px">
+      <div>
+        <div class="flbl" style="margin-bottom:6px">Custom Domains</div>
+        ${S.customDomains.map(d=>`<div style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--surface);border:1px solid var(--border);border-radius:8px;margin-bottom:6px">
+          <span style="font-size:14px">${d.verified?'✅':'⚠️'}</span>
+          <div style="flex:1"><div style="font-weight:700;font-size:13px">${esc(d.domain)}</div>
+            <div style="display:flex;gap:6px;margin-top:3px">
+              ${['dkim','spf','dmarc'].map(k=>`<span style="font-size:9px;padding:1px 6px;border-radius:10px;background:${d[k]?'#dcfce7':'#fef2f2'};color:${d[k]?'var(--green-dark)':'var(--danger)'};">${k.toUpperCase()} ${d[k]?'✓':'✗'}</span>`).join('')}
+            </div>
+          </div>
+          <button class="btn btn-ghost btn-sm" onclick="openDomainSettings()">Edit</button>
+        </div>`).join('')}
+        <button class="btn btn-ghost btn-sm" onclick="openDomainSettings()">+ Add Domain</button>
+      </div>
+      <div>
+        <div class="flbl" style="margin-bottom:6px">Unsubscribe Link Generator</div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px">
+          <div class="fg" style="margin-bottom:8px"><label class="flbl">Unsubscribe Domain</label>
+            <input class="finput" id="unsub-domain" value="${esc(S.unsubscribeDomain)}" placeholder="unsubscribe.yourdomain.com" oninput="S.unsubscribeDomain=this.value"/>
+          </div>
+          <div class="fg" style="margin-bottom:8px"><label class="flbl">Unsubscribe Message</label>
+            <textarea class="ftextarea" style="min-height:56px" oninput="S.unsubscribeMessage=this.value">${esc(S.unsubscribeMessage)}</textarea>
+          </div>
+          <div style="background:#fff;border:1px solid var(--border);border-radius:6px;padding:8px 10px;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);word-break:break-all;margin-bottom:8px">
+            {{unsubscribe_url}} → ${S.unsubscribeDomain?'https://'+esc(S.unsubscribeDomain)+esc(S.unsubscribePath)+'?email={{email}}&token={{token}}':'Set a domain above to generate link'}
+          </div>
+          <button class="btn btn-ghost btn-sm" onclick="copyUnsubLink()">📋 Copy Tag</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mailbox list -->
+  <div class="card" style="padding:0;overflow:hidden">
+    <div style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:var(--surface)">
+      <span class="card-title">Connected Mailboxes (${mbs.length})</span>
+      <button class="btn btn-primary btn-sm" onclick="openAddMailbox()">+ Add Mailbox</button>
+    </div>
+    ${mbs.map(mb=>`
+    <div style="padding:16px 18px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap">
+      <div style="width:36px;height:36px;border-radius:10px;background:${mb.type==='google'?'#fce4ec':mb.type==='microsoft'?'#e3f2fd':'#f1f5f9'};display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">${mb.type==='google'?'🔵':mb.type==='microsoft'?'🟦':'📧'}</div>
+      <div style="flex:1;min-width:180px">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <span style="font-weight:800;font-size:14px;color:var(--navy)">${esc(mb.name)}</span>
+          <span class="badge ${mb.connected?'b-active':'b-draft'}">${mb.connected?'● Connected':'○ Disconnected'}</span>
+          ${mb.active?'<span class="badge b-sent">▶ Active</span>':''}
+        </div>
+        <div class="mono" style="font-size:11px;color:var(--muted);margin-top:2px">${esc(mb.email)}</div>
+        <div style="display:flex;gap:16px;margin-top:6px;flex-wrap:wrap">
+          <span style="font-size:11px;color:var(--muted)">📤 Daily limit: <strong style="color:var(--navy)">${mb.dailyLimit}</strong></span>
+          <span style="font-size:11px;color:var(--muted)">Sent today: <strong style="color:var(--green-dark)">${mb.sent}</strong></span>
+          <span style="font-size:11px;color:var(--muted)">Type: <strong>${mb.type.toUpperCase()}</strong></span>
+        </div>
+      </div>
+      <div class="fgap">
+        <button class="btn btn-ghost btn-sm" onclick="openEditMailbox(${mb.id})">⚙️ Edit</button>
+        <button class="btn ${mb.active?'btn-ghost':'btn-primary'} btn-sm" onclick="toggleMailboxActive(${mb.id})">${mb.active?'Disable':'Enable'}</button>
+        <button class="btn btn-danger btn-sm" onclick="removeMailbox(${mb.id})">✕</button>
+      </div>
+    </div>`).join('')}
+  </div>`;
+}
+
+function toggleMailboxActive(id){const m=S.mailboxes.find(x=>x.id===id);if(m){m.active=!m.active;showPage('mailboxes');toast(m.active?'▶ Mailbox enabled':'⏸ Mailbox disabled');}}
+function removeMailbox(id){S.mailboxes=S.mailboxes.filter(x=>x.id!==id);showPage('mailboxes');toast('🗑 Mailbox removed');}
+function copyUnsubLink(){const tag='{{unsubscribe_url}}';navigator.clipboard&&navigator.clipboard.writeText(tag).then(()=>toast('📋 Copied {{unsubscribe_url}} tag!')).catch(()=>toast('📋 Use: {{unsubscribe_url}}'));}
+
+function openAddMailbox(){openMailboxModal(null);}
+function openEditMailbox(id){openMailboxModal(S.mailboxes.find(x=>x.id===id));}
+
+function openMailboxModal(mb){
+  const isNew=!mb;const m=mb||{id:null,name:'',email:'',type:'smtp',host:'smtp.gmail.com',port:'587',user:'',pass:'',connected:false,dailyLimit:100,sent:0,signature:'',warmup:false,active:true};
+  openModal(`<div class="modal-hdr"><span class="modal-title">${isNew?'➕ Add':'✏️ Edit'} Mailbox</span><button class="modal-close" onclick="closeModal()">×</button></div>
+  <div class="modal-body">
+    <div class="fg"><label class="flbl">Connection Type</label>
+      <select class="fselect" id="mb-type" onchange="renderMbFields()">
+        <option value="google" ${m.type==='google'?'selected':''}>🔵 Google / Gmail (OAuth)</option>
+        <option value="microsoft" ${m.type==='microsoft'?'selected':''}>🟦 Microsoft / Outlook (OAuth)</option>
+        <option value="smtp" ${m.type==='smtp'?'selected':''}>📧 Custom SMTP</option>
+        <option value="imap" ${m.type==='imap'?'selected':''}>📥 IMAP / SMTP</option>
+      </select>
+    </div>
+    <div id="mb-fields">${mbFields(m)}</div>
+    <div class="grid2" style="gap:10px">
+      <div class="fg"><label class="flbl">From Name</label><input class="finput" id="mb-name" value="${esc(m.name)}" placeholder="Jane Smith"/></div>
+      <div class="fg"><label class="flbl">Daily Send Limit</label><input class="finput" id="mb-limit" type="number" value="${m.dailyLimit}" placeholder="100"/></div>
+    </div>
+    <div class="fg"><label class="flbl">Email Signature (plain text or HTML)</label>
+      <textarea class="ftextarea" id="mb-sig" style="min-height:80px">${esc(m.signature)}</textarea>
+    </div>
+    <div class="toggle-row">
+      <div><div class="t-label">Enable Warmup</div><div class="t-desc">Gradually increase sending volume over 4 weeks</div></div>
+      <button class="toggle ${m.warmup?'on':''}" id="mb-warmup" onclick="this.classList.toggle('on')"></button>
+    </div>
+    <div class="warn-box mt8">⚠️ OAuth connections require server-side auth flow. SMTP/IMAP credentials should be stored server-side in production.</div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+    ${!isNew?`<button class="btn btn-danger btn-sm" onclick="removeMailbox(${m.id});closeModal()">Delete</button>`:''}
+    <button class="btn btn-primary" onclick="saveMailbox(${isNew?'null':m.id})">${isNew?'Connect Mailbox':'Save Changes'}</button>
+  </div>`);
+}
+
+function mbFields(m){
+  const t=(typeof m==='object')?m.type:($('mb-type')||{value:'smtp'}).value;
+  if(t==='google')return`<div class="info-box" style="margin-bottom:12px">Click below to authenticate with Google. This will open a Google OAuth consent screen where you grant Inboxmail permission to send emails on your behalf.</div><button class="btn btn-primary btn-full" onclick="toast('🔵 Google OAuth flow would open here (requires backend)')">🔵 Connect with Google</button><div class="fg mt8"><label class="flbl">Gmail / Google Workspace Email</label><input class="finput" id="mb-email" value="${typeof m==='object'?esc(m.email):''}" placeholder="you@gmail.com"/></div>`;
+  if(t==='microsoft')return`<div class="info-box" style="margin-bottom:12px">Click below to authenticate with Microsoft. This requires an Azure App Registration with Mail.Send permission.</div><button class="btn btn-navy btn-full" onclick="toast('🟦 Microsoft OAuth flow would open here (requires backend)')">🟦 Connect with Microsoft</button><div class="fg mt8"><label class="flbl">Outlook / Microsoft 365 Email</label><input class="finput" id="mb-email" value="${typeof m==='object'?esc(m.email):''}" placeholder="you@company.com"/></div>`;
+  // SMTP / IMAP
+  return`<div class="fg"><label class="flbl">Email Address</label><input class="finput" id="mb-email" value="${typeof m==='object'?esc(m.email):''}" placeholder="you@domain.com"/></div>
+    <div class="grid2" style="gap:10px">
+      <div class="fg"><label class="flbl">SMTP Host</label><input class="finput" id="mb-smtp-host" value="${typeof m==='object'?esc(m.host||''):''}" placeholder="smtp.gmail.com"/></div>
+      <div class="fg"><label class="flbl">SMTP Port</label><input class="finput" id="mb-smtp-port" value="${typeof m==='object'?esc(m.port||'587'):''}" placeholder="587"/></div>
+    </div>
+    ${t==='imap'?`<div class="grid2" style="gap:10px"><div class="fg"><label class="flbl">IMAP Host</label><input class="finput" id="mb-imap-host" value="" placeholder="imap.gmail.com"/></div><div class="fg"><label class="flbl">IMAP Port</label><input class="finput" id="mb-imap-port" value="993" placeholder="993"/></div></div>`:''}
+    <div class="fg"><label class="flbl">Username</label><input class="finput" id="mb-user" value="${typeof m==='object'?esc(m.user||''):''}" placeholder="you@gmail.com"/></div>
+    <div class="fg"><label class="flbl">Password / App Password</label><input class="finput" id="mb-pass" type="password" value="${typeof m==='object'?esc(m.pass||''):''}" placeholder="App password recommended"/></div>`;
+}
+
+function renderMbFields(){const type=($('mb-type')||{value:'smtp'}).value;const df={id:null,name:'',email:'',type,host:'',port:'587',user:'',pass:'',signature:''};const fld=$('mb-fields');if(fld)fld.innerHTML=mbFields(type);}
+
+function saveMailbox(id){
+  const name=($('mb-name')||{value:''}).value.trim();
+  const email=($('mb-email')||{value:''}).value.trim();
+  const type=($('mb-type')||{value:'smtp'}).value;
+  const limit=+($('mb-limit')||{value:'100'}).value||100;
+  const sig=($('mb-sig')||{value:''}).value;
+  const warmup=($('mb-warmup')||{className:''}).className.includes('on');
+  if(!email){toast('⚠️ Email address required');return;}
+  const obj={name:name||email,email,type,host:($('mb-smtp-host')||{value:''}).value,port:($('mb-smtp-port')||{value:'587'}).value,user:($('mb-user')||{value:''}).value,pass:($('mb-pass')||{value:''}).value,connected:true,dailyLimit:limit,sent:0,signature:sig,warmup,active:true};
+  if(id===null||id==='null'){S.mailboxes.push({id:Date.now(),...obj});toast('✅ Mailbox connected!');}
+  else{const i=S.mailboxes.findIndex(x=>x.id===+id);if(i>-1)S.mailboxes[i]={...S.mailboxes[i],...obj};toast('✅ Mailbox updated!');}
+  closeModal();showPage('mailboxes');
+}
+
+function openDomainSettings(){
+  openModal(`<div class="modal-hdr"><span class="modal-title">🌐 Custom Domains</span><button class="modal-close" onclick="closeModal()">×</button></div>
+  <div class="modal-body">
+    <div class="info-box" style="margin-bottom:14px">Add a custom sending domain (e.g. <strong>mail.yourdomain.com</strong>) for better deliverability. You'll need to add DNS records to verify ownership and enable DKIM/SPF.</div>
+    ${S.customDomains.map((d,i)=>`
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+        <div style="font-weight:800;font-size:14px">${esc(d.domain)}</div>
+        <div class="fgap">
+          ${['dkim','spf','dmarc'].map(k=>`<span class="badge ${d[k]?'b-active':'b-draft'}">${k.toUpperCase()} ${d[k]?'✓':'✗'}</span>`).join('')}
+          <button class="btn btn-danger btn-sm" onclick="S.customDomains.splice(${i},1);closeModal();openDomainSettings()">✕</button>
+        </div>
+      </div>
+      ${!d.dkim||!d.spf?`<div class="warn-box">DNS records not fully verified. Add the records below to your domain's DNS settings.</div>
+      <div style="margin-top:10px;display:flex;flex-direction:column;gap:6px;font-size:11px;font-family:'DM Mono',monospace">
+        <div style="background:#fff;padding:8px 10px;border-radius:6px;border:1px solid var(--border)"><span style="color:var(--muted)">TXT</span> _dmarc.${esc(d.domain)}: <span style="color:var(--navy)">v=DMARC1; p=quarantine;</span></div>
+        <div style="background:#fff;padding:8px 10px;border-radius:6px;border:1px solid var(--border)"><span style="color:var(--muted)">TXT</span> @: <span style="color:var(--navy)">v=spf1 include:inboxmail.io ~all</span></div>
+        <div style="background:#fff;padding:8px 10px;border-radius:6px;border:1px solid var(--border)"><span style="color:var(--muted)">CNAME</span> inboxmail._domainkey: <span style="color:var(--navy)">dkim.inboxmail.io</span></div>
+      </div>
+      <button class="btn btn-primary btn-sm mt8" onclick="S.customDomains[${i}].dkim=true;S.customDomains[${i}].spf=true;S.customDomains[${i}].verified=true;closeModal();openDomainSettings();toast('✅ Domain verified!')">🔍 Verify DNS Records</button>`:'<div class="success-box">✅ All DNS records verified. Domain is ready for sending.</div>'}
+    </div>`).join('')}
+    <div class="fg"><label class="flbl">Add New Domain</label><div style="display:flex;gap:8px"><input class="finput" id="new-domain-input" placeholder="mail.yourdomain.com"/><button class="btn btn-primary btn-sm" style="flex-shrink:0" onclick="addCustomDomain()">Add</button></div></div>
+  </div>
+  <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal()">Close</button></div>`);
+}
+
+function addCustomDomain(){const v=($('new-domain-input')||{value:''}).value.trim();if(!v){toast('⚠️ Enter a domain');return;}S.customDomains.push({id:Date.now(),domain:v,verified:false,dkim:false,spf:false,dmarc:false});closeModal();openDomainSettings();toast('✅ Domain added — verify DNS records to activate');}
+
+
+// ── WHITE LABEL ──
+function renderWhiteLabel(){
+  const b=S.brand;
+  return`
+  <div class="info-box" style="margin-bottom:16px">🎨 White label Inboxmail for your agency. Upload your logo, set your brand colors, and use your own subdomain — your clients will see your brand, not ours.</div>
+  <div class="grid2">
+    <div>
+      <div class="card">
+        <div class="card-hdr"><span class="card-title">🖼 Logo & Brand Identity</span></div>
+        <div class="fg">
+          <label class="flbl">Upload Logo</label>
+          <div style="border:2px dashed var(--border);border-radius:10px;padding:22px;text-align:center;cursor:pointer;background:var(--surface);transition:all .2s" onclick="$('logo-upload').click()" id="logo-drop-zone">
+            <input type="file" id="logo-upload" accept="image/*" style="display:none" onchange="handleLogoUpload(this)"/>
+            ${b.logo?`<img src="${esc(b.logo)}" style="max-height:60px;max-width:200px;object-fit:contain;margin-bottom:8px"/><div style="font-size:12px;color:var(--green-dark)">✓ Logo uploaded</div>`:`<div style="font-size:28px;margin-bottom:6px;opacity:.4">🖼</div><div style="font-size:13px;font-weight:700;color:var(--navy)">Click to upload logo</div><div style="font-size:11px;color:var(--muted)">PNG, SVG, JPG · Max 2MB</div>`}
+          </div>
+        </div>
+        <div class="fg"><label class="flbl">Brand Name (shown in nav if no logo)</label><input class="finput" id="wl-brand-name" value="${esc(b.logoText)}" placeholder="Your Agency Name" oninput="S.brand.logoText=this.value"/></div>
+        <div class="fg"><label class="flbl">Company Name</label><input class="finput" id="wl-company" value="${esc(b.companyName)}" placeholder="Acme Agency Inc." oninput="S.brand.companyName=this.value"/></div>
+        <div class="fg"><label class="flbl">Support Email</label><input class="finput" id="wl-support" type="email" value="${esc(b.supportEmail)}" placeholder="support@youragency.com" oninput="S.brand.supportEmail=this.value"/></div>
+        <div class="fg"><label class="flbl">Footer Text</label><input class="finput" id="wl-footer" value="${esc(b.footerText)}" placeholder="Powered by Your Agency" oninput="S.brand.footerText=this.value"/></div>
+        <div class="fg">
+          <label class="flbl">Primary Brand Color</label>
+          <div style="display:flex;gap:10px;align-items:center">
+            <input type="color" value="${esc(b.primaryColor)}" id="wl-color" oninput="S.brand.primaryColor=this.value;applyBrandColor(this.value)" style="width:48px;height:36px;border-radius:8px;border:1px solid var(--border);padding:2px;cursor:pointer"/>
+            <input class="finput" value="${esc(b.primaryColor)}" style="max-width:120px;font-family:'DM Mono',monospace" oninput="S.brand.primaryColor=this.value;$('wl-color').value=this.value;applyBrandColor(this.value)"/>
+            <div style="width:36px;height:36px;border-radius:8px;background:${esc(b.primaryColor)};border:1px solid var(--border)"></div>
+          </div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px">
+          ${['#22c55e','#3b82f6','#8b5cf6','#f59e0b','#ef4444','#0ea5e9','#1e293b','#f97316'].map(c=>`<div style="width:28px;height:28px;border-radius:6px;background:${c};cursor:pointer;border:2px solid ${c===b.primaryColor?'var(--navy)':'transparent'};transition:transform .1s" onclick="S.brand.primaryColor='${c}';document.getElementById('wl-color').value='${c}';applyBrandColor('${c}');showPage('whitelabel')" title="${c}"></div>`).join('')}
+        </div>
+        <button class="btn btn-primary btn-full mt16" onclick="saveBrandSettings()">✅ Save Brand Settings</button>
+      </div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:14px">
+        <div class="card-hdr"><span class="card-title">🌐 Subdomain & Custom Domain</span></div>
+        <div class="fg">
+          <label class="flbl">Inboxmail Subdomain</label>
+          <div style="display:flex;gap:0;align-items:center">
+            <input class="finput" id="wl-subdomain" value="${esc(b.subdomain)}" placeholder="acme" style="border-radius:var(--radius) 0 0 var(--radius);max-width:140px" oninput="S.brand.subdomain=this.value"/>
+            <div style="background:var(--surface2);border:1.5px solid var(--border);border-left:none;border-radius:0 var(--radius) var(--radius) 0;padding:9px 12px;font-size:13px;color:var(--muted);font-family:'DM Mono',monospace;white-space:nowrap">.inboxmail.io</div>
+          </div>
+          <div style="font-size:11px;color:var(--green-dark);margin-top:4px">App URL: <strong>https://${b.subdomain||'yourname'}.inboxmail.io</strong></div>
+        </div>
+        <div class="fg"><label class="flbl">Custom Domain (optional)</label>
+          <input class="finput" id="wl-custom-domain" value="${esc(b.customDomain)}" placeholder="app.youragency.com" oninput="S.brand.customDomain=this.value"/>
+          <div style="font-size:11px;color:var(--muted);margin-top:3px">Point a CNAME record for this domain to <code style="font-family:'DM Mono',monospace;background:var(--surface2);padding:1px 5px;border-radius:4px">custom.inboxmail.io</code></div>
+        </div>
+        ${b.customDomain?`<div class="success-box">Custom domain set: <strong>https://${esc(b.customDomain)}</strong></div>`:''}
+        <button class="btn btn-ghost btn-sm mt8" onclick="saveBrandSettings()">Save Domains</button>
+      </div>
+
+      <div class="card" style="margin-bottom:14px">
+        <div class="card-hdr"><span class="card-title">👁 Live Preview</span></div>
+        <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden">
+          <!-- Preview sidebar snippet -->
+          <div style="background:var(--navy);padding:12px 14px;display:flex;align-items:center;gap:8px">
+            ${b.logo?`<img src="${esc(b.logo)}" style="height:26px;object-fit:contain"/>`:`<div style="width:28px;height:28px;background:${esc(b.primaryColor)};border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px">📬</div>`}
+            <span style="font-size:15px;font-weight:800;color:#fff">${esc(b.logoText)}</span>
+          </div>
+          <div style="background:var(--surface);padding:10px 14px">
+            <div style="display:flex;gap:6px;margin-bottom:8px">
+              <div style="width:60px;height:7px;background:${esc(b.primaryColor)};border-radius:4px;opacity:.3"></div>
+              <div style="width:40px;height:7px;background:var(--border);border-radius:4px"></div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;padding:7px 10px;background:${esc(b.primaryColor)}18;border-radius:7px">
+              <span style="font-size:12px">📈</span><span style="font-size:12px;font-weight:700;color:${esc(b.primaryColor)}">Dashboard</span>
+            </div>
+            <div style="padding:7px 10px;font-size:12px;color:var(--muted)">💌 Inbox</div>
+            <div style="padding:7px 10px;font-size:12px;color:var(--muted)">📢 Campaigns</div>
+          </div>
+          <div style="background:#fff;padding:8px 14px;border-top:1px solid var(--border);font-size:10px;color:var(--muted2)">${esc(b.footerText)}</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-hdr"><span class="card-title">📧 Email Branding</span></div>
+        <div class="fg"><label class="flbl">Email Header Logo URL</label><input class="finput" id="wl-favicon" value="${esc(b.faviconUrl)}" placeholder="https://yourdomain.com/logo.png" oninput="S.brand.faviconUrl=this.value"/></div>
+        <div style="font-size:12px;color:var(--muted);margin-top:4px">This logo appears in the header of all outbound emails sent through Inboxmail.</div>
+        <div class="info-box mt8">In production, all email templates will use your brand color, logo, and company name automatically.</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function handleLogoUpload(input){
+  const file=input&&input.files&&input.files[0];if(!file)return;
+  if(file.size>2*1024*1024){toast('⚠️ Logo must be under 2MB');return;}
+  const reader=new FileReader();
+  reader.onload=ev=>{S.brand.logo=ev.target.result;showPage('whitelabel');toast('✅ Logo uploaded!');};
+  reader.readAsDataURL(file);
+}
+
+function applyBrandColor(color){
+  // Live-apply brand color to CSS variable for instant preview
+  document.documentElement.style.setProperty('--green',color);
+  const dark=color; // simplified - in prod compute darker shade
+  document.documentElement.style.setProperty('--green-dark',dark);
+  document.documentElement.style.setProperty('--green-light',color+'22');
+}
+
+function saveBrandSettings(){
+  S.brand.logoText=($('wl-brand-name')||{value:S.brand.logoText}).value||S.brand.logoText;
+  S.brand.companyName=($('wl-company')||{value:S.brand.companyName}).value;
+  S.brand.supportEmail=($('wl-support')||{value:S.brand.supportEmail}).value;
+  S.brand.footerText=($('wl-footer')||{value:S.brand.footerText}).value;
+  S.brand.subdomain=($('wl-subdomain')||{value:S.brand.subdomain}).value;
+  S.brand.customDomain=($('wl-custom-domain')||{value:S.brand.customDomain}).value;
+  S.brand.faviconUrl=($('wl-favicon')||{value:S.brand.faviconUrl}).value;
+  toast('✅ Brand settings saved!');showPage('whitelabel');
+}
+
+function openCompose(){
+  S.composeTo=[];
+  openModal(`<div class="modal-hdr"><span class="modal-title">✉️ Compose Email</span><button class="modal-close" onclick="closeModal()">×</button></div>
+  <div class="modal-body">
+    <div class="fg"><label class="flbl">From</label><input class="finput" id="c-from" value="${esc(S.smtp.fromEmail||'you@yourdomain.com')}"/></div>
+    <div class="fg"><label class="flbl">To</label><div class="tag-wrap" id="tag-wrap" onclick="$('tag-ti').focus()"><input class="tag-input" id="tag-ti" placeholder="email@domain.com · press Enter..." onkeydown="tagKeydown(event)"/></div></div>
+    <div class="fg"><label class="flbl">Subject</label><input class="finput" id="c-subj" placeholder="Subject line..."/></div>
+    <div class="fg"><label class="flbl">Body</label>
+      <div class="ctoolbar">${['{{first_name}}','{{company}}','{{sender_name}}'].map(v=>`<button class="tbtn" onclick="insertVar('${v}')">${v}</button>`).join('')}</div>
+      <textarea class="ftextarea" id="c-body" style="min-height:150px;border-top-left-radius:0;border-top-right-radius:0;border-top:none" placeholder="Write your email..."></textarea>
+    </div>
+  </div>
+  <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal()">Cancel</button><button class="btn btn-primary" id="send-btn" onclick="sendEmail()">🚀 Send</button></div>`);
+}
+function tagKeydown(e){const inp=$('tag-ti');if(!inp)return;if((e.key==='Enter'||e.key===',')&&inp.value.trim()){e.preventDefault();const val=inp.value.trim().replace(/,/g,'');S.composeTo.push(val);const wrap=$('tag-wrap');const tag=document.createElement('span');tag.className='tag';tag.innerHTML=`${esc(val)}<button class="tag-del" onclick="this.parentElement.remove()">×</button>`;wrap.insertBefore(tag,inp);inp.value='';}if(e.key==='Backspace'&&!inp.value&&S.composeTo.length){S.composeTo.pop();const tags=$('tag-wrap').querySelectorAll('.tag');if(tags.length)tags[tags.length-1].remove();}}
+function insertVar(v){const b=$('c-body');if(b){b.value+=v;b.focus();}}
+function sendEmail(){const to=S.composeTo,subj=($('c-subj')||{value:''}).value.trim(),body=($('c-body')||{value:''}).value.trim();if(!to.length||!subj||!body){toast('⚠️ Fill all fields + add a recipient');return;}const btn=$('send-btn');if(btn){btn.textContent='⏳ Sending...';btn.disabled=true;}setTimeout(()=>{closeModal();toast(`✅ Sent to ${to.length} recipient${to.length!==1?'s':''}`);},1300);}
+
+// ═══════════════════════════════════════
+// MODAL
+// ═══════════════════════════════════════
+function openModal(html){closeModal();const o=document.createElement('div');o.className='overlay';o.id='modal-overlay';o.innerHTML=`<div class="modal">${html}</div>`;o.addEventListener('click',e=>{if(e.target===o)closeModal();});document.body.appendChild(o);document.body.style.overflow='hidden';}
+function closeModal(){const o=$('modal-overlay');if(o)o.remove();document.body.style.overflow='';}
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+// Auto-login with demo account for preview
+A.user=A.users[0];
+launchApp();
+</script>
+</body>
+</html>
